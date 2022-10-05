@@ -74,7 +74,7 @@ class Zearch_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/zearch-public.css', array(), $this->version, 'all' );
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . './dist/output.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'tailwind', plugin_dir_url('Zearch/dist/').'output.css', array(), '1.0', 'all');
 
 
 	}
@@ -102,4 +102,12 @@ class Zearch_Public {
 
 	}
 
+	
+
+}
+
+add_action( 'init', 'results_template' );
+
+function results_template() {
+  echo include 'template/droup-down.php' ; 
 }
