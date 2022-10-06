@@ -1952,6 +1952,14 @@ html {
   background-color: transparent;
 }
 
+.btn-outline.btn-warning .badge-outline {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--wa) / var(--tw-border-opacity));
+  background-color: transparent;
+  --tw-text-opacity: 1;
+  color: hsl(var(--wa) / var(--tw-text-opacity));
+}
+
 .btn-outline:hover .badge.outline {
   --tw-border-opacity: 1;
   border-color: hsl(var(--b2, var(--b1)) / var(--tw-border-opacity));
@@ -2017,6 +2025,27 @@ html {
   outline-offset: 2px;
 }
 
+.btn-warning {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--wa) / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--wa) / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: hsl(var(--wac, var(--nc)) / var(--tw-text-opacity));
+}
+
+.btn-warning:hover, 
+    .btn-warning.btn-active {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--wa) / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--wa) / var(--tw-bg-opacity));
+}
+
+.btn-warning:focus-visible {
+  outline: 2px solid hsl(var(--wa));
+}
+
 .btn.glass:hover,
     .btn.glass.btn-active {
   --glass-opacity: 25%;
@@ -2025,6 +2054,20 @@ html {
 
 .btn.glass:focus-visible {
   outline: 2px solid currentColor;
+}
+
+.btn-outline.btn-warning {
+  --tw-text-opacity: 1;
+  color: hsl(var(--wa) / var(--tw-text-opacity));
+}
+
+.btn-outline.btn-warning:hover {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--wa) / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--wa) / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: hsl(var(--wac, var(--nc)) / var(--tw-text-opacity));
 }
 
 .btn-disabled, 
@@ -2223,6 +2266,10 @@ body[dir="rtl"] .checkbox:checked,
 .collapse-plus:focus:not(.collapse-close) .collapse-title:after,
 .collapse-plus:not(.collapse-close) input[type="checkbox"]:checked ~ .collapse-title:after {
   content: "−";
+}
+
+.drawer-toggle:focus-visible ~ .drawer-content .drawer-button.btn-warning {
+  outline: 2px solid hsl(var(--wa));
 }
 
 .input[list]::-webkit-calendar-picker-indicator {
@@ -2572,6 +2619,10 @@ body[dir="rtl"] .checkbox:checked,
   margin: 0.75rem;
 }
 
+.m-0 {
+  margin: 0px;
+}
+
 .my-10 {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
@@ -2592,6 +2643,10 @@ body[dir="rtl"] .checkbox:checked,
 
 .mr-5 {
   margin-right: 1.25rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
 }
 
 .flex {
@@ -2658,6 +2713,14 @@ body[dir="rtl"] .checkbox:checked,
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.items-end {
+  align-items: flex-end;
+}
+
+.items-center {
+  align-items: center;
+}
+
 .justify-center {
   justify-content: center;
 }
@@ -2695,6 +2758,16 @@ body[dir="rtl"] .checkbox:checked,
 .bg-base-100 {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--b1) / var(--tw-bg-opacity));
+}
+
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#f99e41\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 158 65 / var(--tw-bg-opacity));
 }
 
 .p-3 {
@@ -2761,9 +2834,18 @@ body[dir="rtl"] .checkbox:checked,
   font-weight: 500;
 }
 
+.font-bold {
+  font-weight: 700;
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-\[\#f99e41\] {
+  --tw-text-opacity: 1;
+  color: rgb(249 158 65 / var(--tw-text-opacity));
 }
 
 .shadow-lg {
