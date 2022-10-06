@@ -51,6 +51,8 @@ class Zearch_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		
+		add_action( 'wp_head', [ $this, 'results_template'] );
 
 	}
 
@@ -99,15 +101,18 @@ class Zearch_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/zearch-public.js', array( 'jquery' ), $this->version, false );
-
+		wp_register_script( 'dayz-search-result',  plugin_dir_url( __FILE__ ) . 'js/ajax.js', array( 'jquery' ), '1.0.0', true);
+		wp_enqueue_script('dayz-search-result');
+		wp_localize_script( 'dayz-search-result', 'DayzAjax', array( 'dayz_ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
-	
+	public function query_elasticsearch() {
+		echo "Dayz";
+		die();
+	}
 
-}
+	public function results_template() {
+		echo include 'template/template-one.php' ; 
+	}
 
-add_action( 'wp_head', 'results_template' );
-
-function results_template() {
-  echo include 'template/template-one.php' ; 
 }

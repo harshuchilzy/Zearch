@@ -28,5 +28,21 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
-
+	 
 })( jQuery );
+
+jQuery( document ).ready(function() {
+
+    jQuery("#search-form-2").keyup( function(e) {
+		e.preventDefault();
+		search_values = jQuery(this).val();
+		jQuery.ajax({
+		   type : "post",
+		   url : DayzAjax.dayz_ajaxurl,
+		   data : {action: "query_elasticsearch", search_values : search_values},
+		   success: function(response) {
+			  console.log(response);
+		   }
+		});
+	 });
+});
