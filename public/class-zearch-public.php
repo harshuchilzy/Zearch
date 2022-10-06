@@ -106,8 +106,15 @@ class Zearch_Public {
 
 }
 
-add_action( 'init', 'results_template' );
+add_action( 'wp_head', 'results_template' );
 
 function results_template() {
   echo include 'template/droup-down.php' ; 
 }
+
+// // function that runs when shortcode is called
+// function results_template() { 
+// 	echo include 'template/droup-down.php' ;
+// }
+// // register shortcode
+// add_shortcode('greeting', 'results_template');
