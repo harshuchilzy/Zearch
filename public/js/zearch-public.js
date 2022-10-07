@@ -36,13 +36,18 @@ jQuery( document ).ready(function() {
     jQuery("#search-form-2").keyup( function(e) {
 		e.preventDefault();
 		search_values = jQuery(this).val();
-		jQuery.ajax({
-		   type : "post",
-		   url : DayzAjax.dayz_ajaxurl,
-		   data : {action: "query_elasticsearch", search_values : search_values},
-		   success: function(response) {
-			  console.log(response);
-		   }
-		});
+		if (this.value.length > 3) {
+			jQuery.ajax({
+				type : "post",
+				url : DayzAjax.dayz_ajaxurl,
+				data : {action: "query_elasticsearch", search_values : search_values},
+				success: function(response) {
+				   console.log(response);
+				}
+			 });
+		} else {
+			console.log('type more than 3 letters');
+		}
+		
 	 });
 });
