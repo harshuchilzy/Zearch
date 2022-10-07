@@ -22,7 +22,9 @@
                         Category
                     </div>
                     <div class="collapse-content"> 
-                        <p>tabindex="0" attribute is necessary to make the div focusable</p>
+                       <?php  
+                        echo do_shortcode( '[dayz_product_cats]' );
+                       ?>
                     </div>
                 </div>
                 <div tabindex="0" class="collapse collapse-arrow  rounded-box">
@@ -30,7 +32,9 @@
                         Brand
                     </div>
                     <div class="collapse-content"> 
-                        <p>tabindex="0" attribute is necessary to make the div focusable</p>
+                       <?php  
+                        echo do_shortcode( '[dayz_product_brands]' );
+                       ?>
                     </div>
                 </div>
                 <div tabindex="0" class="collapse collapse-arrow  rounded-box">
@@ -55,8 +59,8 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-4 gap-4 flex">
-                    <div class="bg-black shadow-md m-3 rounded-md">
+                <div class="grid grid-cols-4 gap-4 flex" id="dayz_elastic_results">
+                    <!-- <div class="bg-black shadow-md m-3 rounded-md">
                         <div class="image-area flex justify-center">
                             <img src="https://itslondon.s3.amazonaws.com/p/xxl/EIN4513501.jpg" alt="" width="100%">
                         </div>
@@ -111,7 +115,7 @@
                             <p class="text-white font-bold m-0">$13.00</p>
                             <a class="btn bg-[#f99e41] text-white text-lg">Add to Cart</a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

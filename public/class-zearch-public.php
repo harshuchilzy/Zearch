@@ -56,9 +56,8 @@ class Zearch_Public {
 
 		add_action( 'wp_ajax_query_elasticsearch', [ $this, 'query_elasticsearch'] );
 		add_action( 'wp_ajax_nopriv_query_elasticsearch', [ $this, 'query_elasticsearch'] );
-
-
-
+		add_shortcode('dayz_product_cats', [ $this, 'dayz_product_cats']);
+		add_shortcode('dayz_product_brands', [ $this, 'dayz_product_brands']);
 	}
 
 	/**
@@ -112,13 +111,102 @@ class Zearch_Public {
 	}
 
 	public function query_elasticsearch() {
+		
 		$query = $_POST['search_values'];
-		echo $query;
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		CURLOPT_URL => 'http://88.198.32.151:9200/_all/_search?pretty',
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => '',
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 0,
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => 'POST',
+		CURLOPT_POSTFIELDS =>'{
+
+		"query": {
+
+			"query_string": {
+
+			"query": "deurk*",
+
+			"default_field": "post_title"
+
+			}
+
+		}
+
+		}',
+		CURLOPT_HTTPHEADER => array(
+			'Content-Type: application/json'
+		),
+		));
+
+		$response = curl_exec($curl);
+
+		curl_close($curl);
+		echo $response;
 		die();
 	}
 
 	public function results_template() {
 		echo include 'template/template-one.php' ; 
 	}
+    public  function dayz_product_cats() {
+		$orderby = 'name';
+		$order = 'asc';
+		$hide_empty = false ;
+		$cat_args = array(
+			'orderby'    => $orderby,
+			'order'      => $order,
+			'hide_empty' => $hide_empty,
+		);
+		
+		$product_categories = get_terms( 'product_cat', $cat_args );
+		
+		if( !empty($product_categories) ){
+			
+		
+		
+			foreach ($product_categories as $key => $category) {
+				
+				echo '<div class="form-control">';
+				echo '<label class="cursor-pointer label">';
+				echo '<span class="label-text text-black text-left text-lg capitalize">'.$category->name.'</span>';
+				echo '<input type="checkbox" value="'.$category->name.'" class="checkbox" />';
+				echo '</label>';
+				echo '</div>';
+				
+			}
+		
+		}
+	}
 
+	public  function dayz_product_brands() {
+		$orderby = 'name';
+		$order = 'asc';
+		$hide_empty = false ;
+		$cat_args = array(
+			'orderby'    => $orderby,
+			'order'      => $order,
+			'hide_empty' => $hide_empty,
+		);
+		
+		$product_categories = get_terms( 'product_brand', $cat_args );
+		
+		if( !empty($product_categories) ){
+		
+			foreach ($product_categories as $key => $category) {
+				echo '<div class="form-control">';
+				echo '<label class="cursor-pointer label">';
+				echo '<span class="label-text text-black text-left text-lg capitalize">'.$category->name.'</span>';
+				echo '<input type="checkbox" value="'.$category->name.'" class="checkbox" />';
+				echo '</label>';
+				echo '</div>';
+				echo '<br>';
+			}
+		}
+	}
 }

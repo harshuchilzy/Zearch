@@ -42,7 +42,16 @@ jQuery( document ).ready(function() {
 				url : DayzAjax.dayz_ajaxurl,
 				data : {action: "query_elasticsearch", search_values : search_values},
 				success: function(response) {
-				   console.log(response);
+					var hits = JSON.parse(response);
+					const hit_results = hits.hits.hits;
+					var html= '';
+				    hit_results.forEach(function(hit_result) {
+						console.log(hit_result._source);
+						var product = hit_result._source;
+						html += '<div class="bg-black shadow-md m-3 rounded-md"><div class="image-area flex justify-center"><img src="'+ product.thumbnail.src +'" alt="" width="100%"></div><div class="details-area bg-black text-white p-4"><p class="font-bold text-[#f99e41]">'+ product.post_title +'</p></div><div class="add-to-cart grid grid-cols-2 gap-4 flex items-end p-4"><p class="text-white font-bold m-0">'+ product.price_html +'</p><a class="btn bg-[#f99e41] text-white text-lg">Add to Cart</a></div></div>';
+						// document.getElementById(html).innerHTML += '<div class="bg-black shadow-md m-3 rounded-md"><div class="image-area flex justify-center"><img src="'+ product.thumbnail.src +'" alt="" width="100%"></div><div class="details-area bg-black text-white p-4"><p class="font-bold text-[#f99e41]">'+ product.post_title +'</p></div><div class="add-to-cart grid grid-cols-2 gap-4 flex items-end p-4"><p class="text-white font-bold m-0">'+ product.price_html +'</p><a class="btn bg-[#f99e41] text-white text-lg">Add to Cart</a></div></div>';
+					});
+					jQuery('#dayz_elastic_results').append(html);
 				}
 			 });
 		} else {
@@ -50,4 +59,4 @@ jQuery( document ).ready(function() {
 		}
 		
 	 });
-});
+}); 
