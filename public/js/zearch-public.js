@@ -64,4 +64,10 @@ jQuery( document ).ready(function($) {
 		}
 		
 	 });
+
+	//filter products cats
+	jQuery( ".dayz_product_cat" ).click(function() {
+		alert(jQuery(this).val());
+	});
 }); 
+ 
