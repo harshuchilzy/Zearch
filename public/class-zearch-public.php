@@ -10,6 +10,8 @@
  * @subpackage Zearch/public
  */
 
+use Elastic\Elasticsearch\ClientBuilder;
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -20,7 +22,8 @@
  * @subpackage Zearch/public
  * @author     DayZ Solutions <info@dayzsolutions.com>
  */
-class Zearch_Public {
+class Zearch_Public
+{
 
 	/**
 	 * The ID of this plugin.
@@ -47,17 +50,18 @@ class Zearch_Public {
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct($plugin_name, $version)
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		
+
 		add_action( 'wp_head', [ $this, 'results_template'] );
 
-		add_action( 'wp_ajax_query_elasticsearch', [ $this, 'query_elasticsearch'] );
-		add_action( 'wp_ajax_nopriv_query_elasticsearch', [ $this, 'query_elasticsearch'] );
-		add_shortcode('dayz_product_cats', [ $this, 'dayz_product_cats']);
-		add_shortcode('dayz_product_brands', [ $this, 'dayz_product_brands']);
+		add_action('wp_ajax_query_zearch', [$this, 'query_zearch']);
+		add_action('wp_ajax_nopriv_query_zearch', [$this, 'query_zearch']);
+		add_shortcode('dayz_product_cats', [$this, 'dayz_product_cats']);
+		add_shortcode('dayz_product_brands', [$this, 'dayz_product_brands']);
 	}
 
 	/**
@@ -65,7 +69,8 @@ class Zearch_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -79,10 +84,8 @@ class Zearch_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/zearch-public.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'tailwind', plugin_dir_url('Zearch').'Zearch/style.css');
-
-
+		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/zearch-public.css', array(), $this->version, 'all');
+		wp_enqueue_style('tailwind', plugin_dir_url('Zearch') . 'Zearch/style.css');
 	}
 
 	/**
@@ -90,7 +93,8 @@ class Zearch_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -104,105 +108,102 @@ class Zearch_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/zearch-public.js', array( 'jquery' ), $this->version, false );
-		wp_register_script( 'dayz-search-result',  plugin_dir_url( __FILE__ ) . 'js/ajax.js', array( 'jquery' ), '1.0.0', true);
-		wp_localize_script( 'dayz-search-result', 'DayzAjax', array( 'dayz_ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/zearch-public.js', array('jquery'), $this->version, false);
+		wp_register_script('dayz-search-result',  plugin_dir_url(__FILE__) . 'js/ajax.js', array('jquery'), '1.0.0', true);
+		wp_localize_script('dayz-search-result', 'DayzAjax', array('dayz_ajaxurl' => admin_url('admin-ajax.php')));
 		wp_enqueue_script('dayz-search-result');
 	}
 
-	public function query_elasticsearch() {
-		
+	public function query_zearch()
+	{
 		$query = $_POST['search_values'];
-		$curl = curl_init();
 
-		curl_setopt_array($curl, array(
-		CURLOPT_URL => 'http://88.198.32.151:9200/_all/_search?pretty',
-		CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_ENCODING => '',
-		CURLOPT_MAXREDIRS => 10,
-		CURLOPT_TIMEOUT => 0,
-		CURLOPT_FOLLOWLOCATION => true,
-		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		CURLOPT_CUSTOMREQUEST => 'POST',
-		CURLOPT_POSTFIELDS =>'{
-
-		"query": {
-
-			"query_string": {
-
-			"query": "deurk*",
-
-			"default_field": "post_title"
-
-			}
-
-		}
-
-		}',
-		CURLOPT_HTTPHEADER => array(
-			'Content-Type: application/json'
-		),
-		));
-
-		$response = curl_exec($curl);
-
-		curl_close($curl);
+		$client = ClientBuilder::create()
+			->setHosts(['http://88.198.32.151:9200'])
+			// ->setApiKey()
+			->build();
+		$params = [
+			'index' => 'deurbeslaggigantnl-post-1', // get index dynamically
+			'type' => 'post',
+			'body' => '{
+				"from":0,"size":8,"sort":[{"_score":{"order":"desc"}}],
+				"query": {
+					"query_string": {
+						"query":"'.$query.'",
+						"type":"phrase",
+						"fields":[
+						   "post_title^1",
+						   "post_excerpt^1",
+						   "post_content^1",
+						   "terms.category.name^1",
+						   "terms.post_tag.name^1",
+						   "terms.ep_custom_result.name^9999"
+						],
+						"boost":3
+					}
+				}
+			}'
+		];
+		$response = $client->search($params);
 		echo $response;
-		die();
+		wp_die();
 	}
 
-	public function results_template() {
-		echo include 'template/template-one.php' ; 
+
+
+	public function results_template()
+	{
+		echo include 'template/template-one.php';
 	}
-    public  function dayz_product_cats() {
+	public  function dayz_product_cats()
+	{
 		$orderby = 'name';
 		$order = 'asc';
-		$hide_empty = false ;
+		$hide_empty = false;
 		$cat_args = array(
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'hide_empty' => $hide_empty,
 		);
-		
-		$product_categories = get_terms( 'product_cat', $cat_args );
-		
-		if( !empty($product_categories) ){
-			
-		
-		
+
+		$product_categories = get_terms('product_cat', $cat_args);
+
+		if (!empty($product_categories)) {
+
+
+
 			foreach ($product_categories as $key => $category) {
-				
+
 				echo '<div class="form-control">';
 				echo '<label class="cursor-pointer label">';
-				echo '<span class="label-text text-black text-left text-lg capitalize">'.$category->name.'</span>';
-				echo '<input type="checkbox" value="'.$category->name.'" class="checkbox" />';
+				echo '<span class="label-text text-black text-left text-lg capitalize">' . $category->name . '</span>';
+				echo '<input type="checkbox" value="' . $category->name . '" class="checkbox" />';
 				echo '</label>';
 				echo '</div>';
-				
 			}
-		
 		}
 	}
 
-	public  function dayz_product_brands() {
+	public  function dayz_product_brands()
+	{
 		$orderby = 'name';
 		$order = 'asc';
-		$hide_empty = false ;
+		$hide_empty = false;
 		$cat_args = array(
 			'orderby'    => $orderby,
 			'order'      => $order,
 			'hide_empty' => $hide_empty,
 		);
-		
-		$product_categories = get_terms( 'product_brand', $cat_args );
-		
-		if( !empty($product_categories) ){
-		
+
+		$product_categories = get_terms('product_brand', $cat_args);
+
+		if (!empty($product_categories)) {
+
 			foreach ($product_categories as $key => $category) {
 				echo '<div class="form-control">';
 				echo '<label class="cursor-pointer label">';
-				echo '<span class="label-text text-black text-left text-lg capitalize">'.$category->name.'</span>';
-				echo '<input type="checkbox" value="'.$category->name.'" class="checkbox" />';
+				echo '<span class="label-text text-black text-left text-lg capitalize">' . $category->name . '</span>';
+				echo '<input type="checkbox" value="' . $category->name . '" class="checkbox" />';
 				echo '</label>';
 				echo '</div>';
 				echo '<br>';

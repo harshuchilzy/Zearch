@@ -1,4 +1,4 @@
-<section class="dayz-products-dropdown p-5">
+<section class="dayz-products-dropdown p-5 zearch-wrapper" style="display: none">
     <div class="container bg-white shadow-lg rounded-lg">
         <div class="flex gap-4 p-5">
             <div class="dayz-search-sidebar w-1/6 p-5">
@@ -59,7 +59,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-4 gap-4 flex" id="dayz_elastic_results">
+                <div class="grid grid-cols-4 gap-4 flex" id="zearch_results">
                     <!-- <div class="bg-black shadow-md m-3 rounded-md">
                         <div class="image-area flex justify-center">
                             <img src="https://itslondon.s3.amazonaws.com/p/xxl/EIN4513501.jpg" alt="" width="100%">
