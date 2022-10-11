@@ -41,12 +41,16 @@ class ZearchOptions {
 			<h2>Zearch</h2>
 			<p></p>
 			<?php settings_errors(); ?>
-
 			<form method="post" action="options.php">
 				<?php
-					settings_fields( 'zearch_option_group' );
-					do_settings_sections( 'zearch-admin' );
-					submit_button();
+				    $post_types = get_post_types( '', 'names' ); 
+						
+					foreach ( $post_types as $post_type ) {
+					   echo '<h4>' . $post_type . '</h4>';
+					   settings_fields( 'zearch_option_group' );
+					   do_settings_sections( 'zearch-admin' );
+					   submit_button();
+					}
 				?>
 			</form>
 		</div>
@@ -67,9 +71,33 @@ class ZearchOptions {
 		);
 
 		add_settings_field(
-			'post_title_0', // id
-			'Post Title', // title
-			array( $this, 'post_title_0_callback' ), // callback
+			'title_0', // id
+			'Title', // title
+			array( $this, 'title_0_callback' ), // callback
+			'zearch-admin', // page
+			'zearch_setting_section' // section
+		);
+
+		add_settings_field(
+			'content_1', // id
+			'Content', // title
+			array( $this, 'content_1_callback' ), // callback
+			'zearch-admin', // page
+			'zearch_setting_section' // section
+		);
+
+		add_settings_field(
+			'excerpt_2', // id
+			'Excerpt', // title
+			array( $this, 'excerpt_2_callback' ), // callback
+			'zearch-admin', // page
+			'zearch_setting_section' // section
+		);
+
+		add_settings_field(
+			'author_3', // id
+			'Author', // title
+			array( $this, 'author_3_callback' ), // callback
 			'zearch-admin', // page
 			'zearch_setting_section' // section
 		);
@@ -77,9 +105,22 @@ class ZearchOptions {
 
 	public function zearch_sanitize($input) {
 		$sanitary_values = array();
-		if ( isset( $input['post_title_0'] ) ) {
-			$sanitary_values['post_title_0'] = sanitize_text_field( $input['post_title_0'] );
+		if ( isset( $input['title_0'] ) ) {
+			$sanitary_values['title_0'] = $input['title_0'];
 		}
+
+		if ( isset( $input['content_1'] ) ) {
+			$sanitary_values['content_1'] = $input['content_1'];
+		}
+
+		if ( isset( $input['excerpt_2'] ) ) {
+			$sanitary_values['excerpt_2'] = $input['excerpt_2'];
+		}
+
+		if ( isset( $input['author_3'] ) ) {
+			$sanitary_values['author_3'] = $input['author_3'];
+		}
+
 
 		return $sanitary_values;
 	}
@@ -87,13 +128,37 @@ class ZearchOptions {
 	public function zearch_section_info() {
 		
 	}
+	
 
-	public function post_title_0_callback() {
+	public function title_0_callback() {
 		printf(
-			'<input class="regular-text" type="checkbox" name="zearch_option_name[post_title_0]" id="post_title_0" value="%s">Searchble',
-			isset( $this->zearch_options['post_title_0'] ) ? esc_attr( $this->zearch_options['post_title_0']) : ''
+			'<input type="checkbox" name="test_option_name[title_0]" id="title_0" value="title_0" %s> <label for="title_0">Seachble</label>',
+			( isset( $this->zearch_options['title_0'] ) && $this->zearch_options['title_0'] === 'title_0' ) ? 'checked' : ''
 		);
 	}
+
+	public function content_1_callback() {
+		printf(
+			'<input type="checkbox" name="test_option_name[content_1]" id="content_1" value="content_1" %s> <label for="content_1">Seachble</label>',
+			( isset( $this->zearch_options['content_1'] ) && $this->zearch_options['content_1'] === 'content_1' ) ? 'checked' : ''
+		);
+	}
+
+	public function excerpt_2_callback() {
+		printf(
+			'<input type="checkbox" name="test_option_name[excerpt_2]" id="excerpt_2" value="excerpt_2" %s> <label for="excerpt_2">Seachble</label>',
+			( isset( $this->zearch_options['excerpt_2'] ) && $this->zearch_options['excerpt_2'] === 'excerpt_2' ) ? 'checked' : ''
+		);
+	}
+
+	public function author_3_callback() {
+		printf(
+			'<input type="checkbox" name="test_option_name[author_3]" id="author_3" value="author_3" %s> <label for="author_3">Seachble</label>',
+			( isset( $this->zearch_options['author_3'] ) && $this->zearch_options['author_3'] === 'author_3' ) ? 'checked' : ''
+		);
+	}
+
+
 
 }
 if ( is_admin() )
