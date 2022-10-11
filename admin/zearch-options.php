@@ -30,10 +30,10 @@ class ZearchOptions {
         ->build();
 
         $response = $client->info();
-        echo '<pre>';
-		print_r($response);
-		echo '</pre>';
-		echo $response['version']['number']; // 8.0.0
+        // echo '<pre>';
+		// print_r($response);
+		// echo '</pre>';
+		// echo $response['version']['number']; // 8.0.0
 
         ?>
 
@@ -67,9 +67,9 @@ class ZearchOptions {
 		);
 
 		add_settings_field(
-			'url_0', // id
-			'URL', // title
-			array( $this, 'url_0_callback' ), // callback
+			'post_title_0', // id
+			'Post Title', // title
+			array( $this, 'post_title_0_callback' ), // callback
 			'zearch-admin', // page
 			'zearch_setting_section' // section
 		);
@@ -77,8 +77,8 @@ class ZearchOptions {
 
 	public function zearch_sanitize($input) {
 		$sanitary_values = array();
-		if ( isset( $input['url_0'] ) ) {
-			$sanitary_values['url_0'] = sanitize_text_field( $input['url_0'] );
+		if ( isset( $input['post_title_0'] ) ) {
+			$sanitary_values['post_title_0'] = sanitize_text_field( $input['post_title_0'] );
 		}
 
 		return $sanitary_values;
@@ -88,13 +88,16 @@ class ZearchOptions {
 		
 	}
 
-	public function url_0_callback() {
+	public function post_title_0_callback() {
 		printf(
-			'<input class="regular-text" type="text" name="zearch_option_name[url_0]" id="url_0" value="%s">',
-			isset( $this->zearch_options['url_0'] ) ? esc_attr( $this->zearch_options['url_0']) : ''
+			'<input class="regular-text" type="checkbox" name="zearch_option_name[post_title_0]" id="post_title_0" value="%s">Searchble',
+			isset( $this->zearch_options['post_title_0'] ) ? esc_attr( $this->zearch_options['post_title_0']) : ''
 		);
 	}
 
 }
 if ( is_admin() )
 	$zearch = new ZearchOptions();
+
+//Api settings 
+include('api-settings.php');
