@@ -2129,33 +2129,6 @@ html {
   background-image: linear-gradient(90deg, transparent 80%, hsl(var(--chkbg)) 80%), linear-gradient(-90deg, transparent 80%, hsl(var(--chkbg)) 80%), linear-gradient(0deg, hsl(var(--chkbg)) 43%, hsl(var(--chkfg)) 43%, hsl(var(--chkfg)) 57%, hsl(var(--chkbg)) 57%);
 }
 
-.checkbox-secondary {
-  --chkbg: var(--s);
-  --chkfg: var(--sc);
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--s) / var(--tw-border-opacity));
-}
-
-.checkbox-secondary:hover {
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--s) / var(--tw-border-opacity));
-}
-
-.checkbox-secondary:focus-visible {
-  outline: 2px solid hsl(var(--s));
-}
-
-.checkbox-secondary:checked, 
-    .checkbox-secondary[checked="true"], 
-    .checkbox-secondary[aria-checked=true] {
-  --tw-border-opacity: 1;
-  border-color: hsl(var(--s) / var(--tw-border-opacity));
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--s) / var(--tw-bg-opacity));
-  --tw-text-opacity: 1;
-  color: hsl(var(--sc) / var(--tw-text-opacity));
-}
-
 .checkbox:disabled {
   cursor: not-allowed;
   border-color: transparent;
@@ -2622,10 +2595,6 @@ body[dir="rtl"] .checkbox:checked,
   margin: 0px;
 }
 
-.mr-3 {
-  margin-right: 0.75rem;
-}
-
 .mt-5 {
   margin-top: 1.25rem;
 }
@@ -2726,6 +2695,11 @@ body[dir="rtl"] .checkbox:checked,
   text-align: center;
 }
 
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -2734,11 +2708,6 @@ body[dir="rtl"] .checkbox:checked,
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
 }
 
 .font-medium {
@@ -2753,6 +2722,11 @@ body[dir="rtl"] .checkbox:checked,
   text-transform: capitalize;
 }
 
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -2761,11 +2735,6 @@ body[dir="rtl"] .checkbox:checked,
 .text-\[\#f99e41\] {
   --tw-text-opacity: 1;
   color: rgb(249 158 65 / var(--tw-text-opacity));
-}
-
-.text-black {
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 .shadow-lg {

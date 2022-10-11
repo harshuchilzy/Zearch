@@ -175,7 +175,7 @@ class Zearch_Public {
 				echo '<div class="form-control">';
 				echo '<label class="cursor-pointer label">';
 				echo '<span class="label-text text-black text-left text-lg capitalize">'.$category->name.'</span>';
-				echo '<input type="checkbox" value="'.$category->name.'" class="checkbox" />';
+				echo '<input type="checkbox" value="'.$category->name.'" class="dayz_product_cat checkbox" />';
 				echo '</label>';
 				echo '</div>';
 				
@@ -210,3 +210,4 @@ class Zearch_Public {
 		}
 	}
 }
+
