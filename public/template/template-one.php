@@ -49,7 +49,7 @@
             <div class="dayz-search-result w-5/6 p-5">
                 <div class="grid grid-cols-2 gap-4 flex">
                     <div class="count p-4">
-                        <b class="mt-5">Results:04</b>
+                        <b class="mt-5">Results: <span id="zearch_result_count">0</span></b>
                     </div>
                     <div class="sort p-4">
                         <select class="select select-bordered w-full max-w-xs bg-white float-right">
@@ -59,64 +59,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-4 gap-4 flex" id="zearch_results">
-                    <!-- <div class="bg-black shadow-md m-3 rounded-md">
-                        <div class="image-area flex justify-center">
-                            <img src="https://itslondon.s3.amazonaws.com/p/xxl/EIN4513501.jpg" alt="" width="100%">
-                        </div>
-                        <div class="details-area bg-black text-white p-4">
-                            <p class="font-bold text-[#f99e41]">Dewalt DCF622N 18V</p>
-                            <p class="m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae repellendus amet opti</p>
-                            
-                        </div>
-                        <div class="add-to-cart grid grid-cols-2 gap-4 flex items-end p-4">
-                            <p class="text-white font-bold m-0">$13.00</p>
-                            <a class="btn bg-[#f99e41] text-white text-lg">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="bg-black shadow-md m-3 rounded-md">
-                        <div class="image-area flex justify-center">
-                            <img src="https://itslondon.s3.amazonaws.com/p/xxl/EIN4513501.jpg" alt="" width="100%">
-                        </div>
-                        <div class="details-area bg-black text-white p-4">
-                            <p class="font-bold text-[#f99e41]">Dewalt DCF622N 18V</p>
-                            <p class="m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae repellendus amet opti</p>
-                            
-                        </div>
-                        <div class="add-to-cart grid grid-cols-2 gap-4 flex items-end p-4">
-                            <p class="text-white font-bold m-0">$13.00</p>
-                            <a class="btn bg-[#f99e41] text-white text-lg">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="bg-black shadow-md m-3 rounded-md">
-                        <div class="image-area flex justify-center">
-                            <img src="https://itslondon.s3.amazonaws.com/p/xxl/EIN4513501.jpg" alt="" width="100%">
-                        </div>
-                        <div class="details-area bg-black text-white p-4">
-                            <p class="font-bold text-[#f99e41]">Dewalt DCF622N 18V</p>
-                            <p class="m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae repellendus amet opti</p>
-                            
-                        </div>
-                        <div class="add-to-cart grid grid-cols-2 gap-4 flex items-end p-4">
-                            <p class="text-white font-bold m-0">$13.00</p>
-                            <a class="btn bg-[#f99e41] text-white text-lg">Add to Cart</a>
-                        </div>
-                    </div>
-                    <div class="bg-black shadow-md m-3 rounded-md">
-                        <div class="image-area flex justify-center">
-                            <img src="https://itslondon.s3.amazonaws.com/p/xxl/EIN4513501.jpg" alt="" width="100%">
-                        </div>
-                        <div class="details-area bg-black text-white p-4">
-                            <p class="font-bold text-[#f99e41]">Dewalt DCF622N 18V</p>
-                            <p class="m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae repellendus amet opti</p>
-                            
-                        </div>
-                        <div class="add-to-cart grid grid-cols-2 gap-4 flex items-end p-4">
-                            <p class="text-white font-bold m-0">$13.00</p>
-                            <a class="btn bg-[#f99e41] text-white text-lg">Add to Cart</a>
-                        </div>
-                    </div> -->
-                </div>
+                <div id="zearch_results"></div>
             </div>
         </div>
     </div>

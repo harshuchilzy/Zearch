@@ -56,11 +56,11 @@ class Zearch_Public
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		add_action( 'wp_head', [ $this, 'results_template'] );
+		add_action( 'wp_footer', [ $this, 'results_template'] );
 
 		add_action('wp_ajax_query_zearch', [$this, 'query_zearch']);
 		add_action('wp_ajax_nopriv_query_zearch', [$this, 'query_zearch']);
-		add_shortcode('dayz_product_cats', [$this, 'dayz_product_cats']);
+		// add_shortcode('dayz_product_cats', [$this, 'dayz_product_cats']);
 		add_shortcode('dayz_product_brands', [$this, 'dayz_product_brands']);
 	}
 
@@ -108,10 +108,9 @@ class Zearch_Public
 		 * class.
 		 */
 
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/zearch-public.js', array('jquery'), $this->version, false);
-		wp_register_script('dayz-search-result',  plugin_dir_url(__FILE__) . 'js/ajax.js', array('jquery'), '1.0.0', true);
-		wp_localize_script('dayz-search-result', 'DayzAjax', array('dayz_ajaxurl' => admin_url('admin-ajax.php')));
-		wp_enqueue_script('dayz-search-result');
+		wp_enqueue_script('zearch-public', plugin_dir_url(__FILE__) . 'js/zearch-public.js', array('jquery'), $this->version, false);
+		wp_localize_script('zearch-public', 'DayzAjax', array('dayz_ajaxurl' => admin_url('admin-ajax.php')));
+		wp_enqueue_script('zearch-public');
 	}
 
 	public function query_zearch()
@@ -145,11 +144,39 @@ class Zearch_Public
 			}'
 		];
 		$response = $client->search($params);
-		echo $response;
+		// echo $response;
+
+		$response = json_decode($response);
+		$hits = $response->hits->hits;
+		$ids = array();
+		// $html = '';
+		
+		foreach($hits as $result){
+			$ids[] = $result->_source->post_id;
+		}
+		$args = array(
+			'post_type' => 'product',
+			'post__in' => $ids,
+		);
+		$products = new WP_Query( $args );
+		ob_start();
+		// Standard loop
+		if ( $products->have_posts() ) :
+			woocommerce_product_loop_start();
+			while ( $products->have_posts() ) : $products->the_post();
+			// do_action( 'woocommerce_shop_loop' );
+			wc_get_template_part( 'content', 'product' );
+			endwhile;
+			woocommerce_product_loop_end();
+            woocommerce_reset_loop();
+			wp_reset_postdata();
+
+		endif;
+		
+		$html = ob_get_clean();
+		echo $html;
 		wp_die();
 	}
-
-
 
 	public function results_template()
 	{
@@ -209,6 +236,50 @@ class Zearch_Public
 				echo '<br>';
 			}
 		}
+		print_r($this->get_price_range());
+		echo 'OK';
+
+	}
+
+	public function get_price_range() {
+		global $wpdb;
+	
+		$args = WC()->query->get_main_query();
+	
+		$tax_query  = isset( $args->tax_query->queries ) ? $args->tax_query->queries : array();
+		$meta_query = isset( $args->query_vars['meta_query'] ) ? $args->query_vars['meta_query'] : array();
+	
+		foreach ( $meta_query + $tax_query as $key => $query ) {
+			if ( ! empty( $query['price_filter'] ) || ! empty( $query['rating_filter'] ) ) {
+				unset( $meta_query[ $key ] );
+			}
+		}
+	
+		$meta_query = new \WP_Meta_Query( $meta_query );
+		$tax_query  = new \WP_Tax_Query( $tax_query );
+	
+		$meta_query_sql = $meta_query->get_sql( 'post', $wpdb->posts, 'ID' );
+		$tax_query_sql  = $tax_query->get_sql( $wpdb->posts, 'ID' );
+	
+		$sql  = "SELECT min( FLOOR( price_meta.meta_value ) ) as min_price, max( CEILING( price_meta.meta_value ) ) as max_price FROM {$wpdb->posts} ";
+		$sql .= " LEFT JOIN {$wpdb->postmeta} as price_meta ON {$wpdb->posts}.ID = price_meta.post_id " . $tax_query_sql['join'] . $meta_query_sql['join'];
+		$sql .= " 	WHERE {$wpdb->posts}.post_type IN ('product')
+				AND {$wpdb->posts}.post_status = 'publish'
+				AND price_meta.meta_key IN ('_price')
+				AND price_meta.meta_value > '' ";
+		$sql .= $tax_query_sql['where'] . $meta_query_sql['where'];
+	
+		$search = \WC_Query::get_main_search_query_sql();
+		if ( $search ) {
+			$sql .= ' AND ' . $search;
+		}
+	
+		$prices = $wpdb->get_row( $sql ); // WPCS: unprepared SQL ok.
+	
+		return [
+			'min' => floor( $prices->min_price ),
+			'max' => ceil( $prices->max_price )
+		];
 	}
 }
 
