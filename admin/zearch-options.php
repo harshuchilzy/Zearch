@@ -30,10 +30,10 @@ class ZearchOptions {
         ->build();
 
         $response = $client->info();
-        echo '<pre>';
-		print_r($response);
-		echo '</pre>';
-		echo $response['version']['number']; // 8.0.0
+        // echo '<pre>';
+		// print_r($response);
+		// echo '</pre>';
+		// echo $response['version']['number']; // 8.0.0
 
         ?>
 
@@ -41,7 +41,6 @@ class ZearchOptions {
 			<h2>Zearch</h2>
 			<p></p>
 			<?php settings_errors(); ?>
-
 			<form method="post" action="options.php">
 				<?php
 					settings_fields( 'zearch_option_group' );
@@ -66,19 +65,39 @@ class ZearchOptions {
 			'zearch-admin' // page
 		);
 
-		add_settings_field(
-			'url_0', // id
-			'URL', // title
-			array( $this, 'url_0_callback' ), // callback
-			'zearch-admin', // page
-			'zearch_setting_section' // section
-		);
+	    $args = array(
+			'public'   => true,
+			'_builtin' => true
+		 );
+		  
+		 $output = 'names'; // 'names' or 'objects' (default: 'names')
+		 $operator = 'and'; // 'and' or 'or' (default: 'and')
+		  
+		 $post_types = get_post_types( $args, $output, $operator );
+		  
+		 if ( $post_types ) { // If there are any custom public post types.
+		  
+			 foreach ( $post_types  as $post_type ) {
+				
+				add_settings_field(
+					'title_'.$post_type , // id
+					'Title '.$post_type , // title
+					array( $this, 'title_callback' ), // callback
+					'zearch-admin', // page
+					'zearch_setting_section', // section
+					$post_type
+				);
+
+			}
+				
+		}
 	}
 
-	public function zearch_sanitize($input) {
+	public function zearch_sanitize($input, $post_type) {
 		$sanitary_values = array();
-		if ( isset( $input['url_0'] ) ) {
-			$sanitary_values['url_0'] = sanitize_text_field( $input['url_0'] );
+
+		if ( isset( $input['title_'.$post_type] ) ) {
+			$sanitary_values['title_'.$post_type] = $input['title_'.$post_type];
 		}
 
 		return $sanitary_values;
@@ -87,14 +106,24 @@ class ZearchOptions {
 	public function zearch_section_info() {
 		
 	}
+	
 
-	public function url_0_callback() {
-		printf(
-			'<input class="regular-text" type="text" name="zearch_option_name[url_0]" id="url_0" value="%s">',
-			isset( $this->zearch_options['url_0'] ) ? esc_attr( $this->zearch_options['url_0']) : ''
-		);
+	public function title_callback($post_type) {
+		foreach ($post_type as $data) {
+			printf(
+				'<input type="checkbox" name="title_option_name[title_'.$data.']" id="title_'.$data.'" value="title_'.$data.'" %s> <label for="title_'.$data.'">Seachble</label>',
+				( isset( $this->zearch_options['title_'.$data] ) && $this->zearch_options['title_'.$data] === 'title_'.$data ) ? 'checked' : ''
+			);
+		}
+		
 	}
+
+
+
 
 }
 if ( is_admin() )
 	$zearch = new ZearchOptions();
+
+//Api settings 
+include('api-settings.php');
