@@ -85,7 +85,7 @@ class ZearchOptions {
 					array( $this, 'title_callback' ), // callback
 					'zearch-admin', // page
 					'zearch_setting_section', // section
-					$post_type
+					$post_types
 				);
 
 			}
@@ -108,11 +108,11 @@ class ZearchOptions {
 	}
 	
 
-	public function title_callback($post_type) {
-		foreach ($post_type as $data) {
+	public function title_callback($post_types) {
+		foreach ($post_types as $post_type) {
 			printf(
-				'<input type="checkbox" name="title_option_name[title_'.$data.']" id="title_'.$data.'" value="title_'.$data.'" %s> <label for="title_'.$data.'">Seachble</label>',
-				( isset( $this->zearch_options['title_'.$data] ) && $this->zearch_options['title_'.$data] === 'title_'.$data ) ? 'checked' : ''
+				'<input type="checkbox" name="title_option_name[title_'.$post_type.']" id="title_'.$post_type.'" value="title_'.$post_type.'" %s> <label for="title_'.$post_type.'">Seachble</label>',
+				( isset( $this->zearch_options['title_'.$post_type] ) && $this->zearch_options['title_'.$post_type] === 'title_'.$post_type ) ? 'checked' : ''
 			);
 		}
 		
