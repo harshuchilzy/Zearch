@@ -67,30 +67,55 @@ class ZearchOptions {
 
 	    $args = array(
 			'public'   => true,
-			'_builtin' => true
+			'_builtin' => true,
 		 );
 		  
 		 $output = 'names'; // 'names' or 'objects' (default: 'names')
 		 $operator = 'and'; // 'and' or 'or' (default: 'and')
-		  
+		
 		 $post_types = get_post_types( $args, $output, $operator );
-		  
+		 
 		 if ( $post_types ) { // If there are any custom public post types.
-		  
+		     
 			 foreach ( $post_types  as $post_type ) {
-				
+			
 				add_settings_field(
 					'title_'.$post_type , // id
 					'Title '.$post_type , // title
 					array( $this, 'title_callback' ), // callback
 					'zearch-admin', // page
 					'zearch_setting_section', // section
-					$post_types
+					$post_type
 				);
 
+			   global $wp_post_types;
+			   $objs = $wp_post_types[$post_type];
+			   $taxonomy_objects = get_object_taxonomies($post_type);
+			   $name = $objs->taxonomies;
+			   
+			//    print_r($taxonomy_objects[0]);
+			//    return;
+               foreach ($taxonomy_objects as $taxonomy_object) {
+					add_settings_field(
+					'title_'.$taxonomy_object , // id
+					'Title '.$taxonomy_object , // title
+					array( $this, 'title_callback' ), // callback
+					'zearch-admin', // page
+					'zearch_setting_section', // section
+					$taxonomy_object
+				);
+			   }
+			  
+
+		
+
 			}
-				
-		}
+			
+
+		 }
+		
+		
+	
 	}
 
 	public function zearch_sanitize($input, $post_type) {
@@ -108,16 +133,13 @@ class ZearchOptions {
 	}
 	
 
-	public function title_callback($post_types) {
-		foreach ($post_types as $post_type) {
-			printf(
-				'<input type="checkbox" name="title_option_name[title_'.$post_type.']" id="title_'.$post_type.'" value="title_'.$post_type.'" %s> <label for="title_'.$post_type.'">Seachble</label>',
-				( isset( $this->zearch_options['title_'.$post_type] ) && $this->zearch_options['title_'.$post_type] === 'title_'.$post_type ) ? 'checked' : ''
-			);
-		}
-		
-	}
+	public function title_callback($post_type) {
+		printf('<input type="checkbox" name="title_check_name[title_'.$post_type.']" id="title_checked_'.$post_type.'" value="title_checked_'.$post_type.'" %s> <label for="title_checked_'.$post_type.'">Seachble</label>',
+		( isset( $this->zearch_options[$post_type] ) && $this->zearch_options[$post_type] === $post_type ) ? 'checked' : '' ); 
 
+		printf('<label style="margin-left:10px;" for="title_width_'.$post_type.'">Weight</label> <input type="range" name="title_range_name[title_'.$post_type.']" id="title_width_'.$post_type.'" min="0" max="100" value="title_width_'.$post_type.'" %s>',
+		( isset( $this->zearch_options[$post_type] ) && $this->zearch_options[$post_type] === $post_type ) ? '' : '' ); 
+	}
 
 
 
