@@ -1,19 +1,19 @@
 <section class="dayz-products-dropdown p-5 zearch-wrapper" style="display: none">
-    <div class="container bg-white shadow-lg rounded-lg">
+    <div class="container bg-white shadow-lg rounded-lg mx-auto">
         <div class="flex gap-4 p-5">
             <div class="dayz-search-sidebar w-1/6 p-5">
                 <div tabindex="0" class="collapse collapse-open collapse-arrow  rounded-box">
                     <div class="collapse-title text-2xl font-medium">
                       Price
                     </div>
-                    <div class="collapse-content"> 
-                    <input type="range" min="0" max="100" value="25" class="range" step="25" />
+                    <div class="collapse-content">
+                    <?php $price_range = ezearch_get_price_range(); ?>
+                        <input id="ezearch_price_ranger" type="range" min="<?php $price_range['min'] ?>" max="<?php $price_range['max'] ?>" value="" class="range" step="1" />
                         <div class="w-full flex justify-between text-xs px-2">
-                            <span>$45</span>
-                            <span>$50</span>
-                            <span>$55</span>
-                            <span>$65</span>
-                            <span>$75</span>
+                        <?php 
+                        // for($i = $price_range['min']; $i >= $price_range['max'], $i++;){
+                        //     echo '<span>' . wc_price($i) . '</span>';
+                        // } ?>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="dayz-search-result w-5/6 p-5">
-                <div class="grid grid-cols-2 gap-4 flex">
+                <div class="grid grid-cols-2 gap-4">
                     <div class="count p-4">
                         <b class="mt-5">Results: <span id="zearch_result_count">0</span></b>
                     </div>
@@ -59,8 +59,23 @@
                         </select>
                     </div>
                 </div>
-                <div id="zearch_results"></div>
+                <div class="grid grid-cols-4 gap-4" id="zearch_results"></div>
             </div>
         </div>
     </div>
 </section>
+<script type="text/html" id="tmpl-ezearch-template">
+    <div class="bg-black shadow-md m-3 rounded-md">
+        <div class="image-area flex justify-center">
+            <img src="{{ data.thumbnail }}" alt="" width="100%">
+        </div>
+        <div class="details-area bg-black text-white p-4">
+            <p class="font-bold text-[#f99e41]">{{ data.post_title }}</p>
+            <p class="m-0">{{ data.description }}</p>
+        </div>
+        <div class="add-to-cart grid grid-cols-3 gap-4 items-center p-4">
+            <p class="text-white font-bold m-0">{{{ data.price_html}}}</p>
+            <a class="btn col-span-2 bg-[#f99e41] text-white text-lg add_to_cart_button ajax_add_to_cart" data-quantity="1" data-pproduct="{{ data.product_id }}">Add to Cart</a>
+        </div>
+    </div>
+</script>

@@ -10,10 +10,10 @@
  *
  * @link              https://dayzsolutions.com
  * @since             1.0.0
- * @package           Zearch
+ * @package           E-Zearch
  *
  * @wordpress-plugin
- * Plugin Name:       Zearch
+ * Plugin Name:       E-Zearch
  * Plugin URI:        https://dayzsolutions.com
  * Description:       This is a description of the plugin.
  * Version:           1.0.0
@@ -21,7 +21,7 @@
  * Author URI:        https://dayzsolutions.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       zearch
+ * Text Domain:       ezearch
  * Domain Path:       /languages
  */
 
@@ -82,7 +82,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-zearch.php';
  */
 function run_zearch() {
 
-	$plugin = new Zearch();
+	$plugin = new EZearch();
 	$plugin->run();
 
 }

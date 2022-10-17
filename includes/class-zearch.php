@@ -27,7 +27,7 @@
  * @subpackage Zearch/includes
  * @author     DayZ Solutions <info@dayzsolutions.com>
  */
-class Zearch {
+class EZearch {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power

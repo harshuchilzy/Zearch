@@ -14,7 +14,7 @@ class ApiSettings {
 
 	public function api_settings_add_plugin_page() {
 		add_submenu_page(
-            'zearch', // menu_slug
+            'ezearch', // menu_slug
 			'Api Settings', // page_title
 			'Api Settings', // menu_title
 			'manage_options', // capability
@@ -27,7 +27,7 @@ class ApiSettings {
 		$this->api_settings_options = get_option( 'api_settings_option_name' ); ?>
 
 		<div class="wrap">
-			<h2>Api Settings</h2>
+			<h2>Search field weight Settings</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 
