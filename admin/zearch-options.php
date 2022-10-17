@@ -52,10 +52,22 @@ class ZearchOptions {
 	<?php }
 
 	public function zearch_page_init() {
+
+		$args = array(
+			'public'   => true,
+			'_builtin' => true,
+		 );
+		  
+		 $output = 'names'; // 'names' or 'objects' (default: 'names')
+		 $operator = 'and'; // 'and' or 'or' (default: 'and')
+		
+		 $post_types = get_post_types( $args, $output, $operator );
+
+		 
 		register_setting(
 			'zearch_option_group', // option_group
 			'zearch_option_name', // option_name
-			array( $this, 'zearch_sanitize' ) // sanitize_callback
+			array( $this, 'zearch_sanitize', $post_types ) // sanitize_callback
 		);
 
 		add_settings_section(
@@ -65,16 +77,7 @@ class ZearchOptions {
 			'zearch-admin' // page
 		);
 
-	    $args = array(
-			'public'   => true,
-			'_builtin' => true,
-		 );
-		  
-		 $output = 'names'; // 'names' or 'objects' (default: 'names')
-		 $operator = 'and'; // 'and' or 'or' (default: 'and')
-		
-		 $post_types = get_post_types( $args, $output, $operator );
-		 
+	   
 		 if ( $post_types ) { // If there are any custom public post types.
 		     
 			 foreach ( $post_types  as $post_type ) {
@@ -147,11 +150,21 @@ class ZearchOptions {
 	
 	}
 
-	public function zearch_sanitize($input, $post_type) {
+	public function zearch_sanitize($input, $post_types) {
 		$sanitary_values = array();
 
-		if ( isset( $input['title_'.$post_type] ) ) {
-			$sanitary_values['title_'.$post_type] = $input['title_'.$post_type];
+		foreach ($post_types as $post_type) {
+			if ( isset( $input['title_'.$post_type] ) ) {
+				$sanitary_values['title_'.$post_type] = $input['title_'.$post_type];
+			}
+	
+			if ( isset( $input['content_'.$post_type] ) ) {
+				$sanitary_values['content_'.$post_type] = $input['content_'.$post_type];
+			}
+	
+			if ( isset( $input['author_'.$post_type] ) ) {
+				$sanitary_values['author_'.$post_type] = $input['author_'.$post_type];
+			}
 		}
 
 		return $sanitary_values;
@@ -187,7 +200,7 @@ class ZearchOptions {
 	}
 
 	public function author_callback($post_type) {
-		printf('<input type="checkbox" name="excerpt_check_name[title_'.$post_type.']" id="excerpt_checked_'.$post_type.'" value="excerpt_checked_'.$post_type.'" %s> <label for="excerpt_checked_'.$post_type.'">Seachble</label>',
+		printf('<input type="checkbox" name="author_check_name[title_'.$post_type.']" id="author_checked_'.$post_type.'" value="author_checked_'.$post_type.'" %s> <label for="author_checked_'.$post_type.'">Seachble</label>',
 		( isset( $this->zearch_options[$post_type] ) && $this->zearch_options[$post_type] === $post_type ) ? 'checked' : '' ); 
 
 		printf('<label style="margin-left:10px;" for="excerpt_width_'.$post_type.'">Weight</label> <input type="range" name="excerpt_range_name[title_'.$post_type.']" id="excerpt_width_'.$post_type.'" min="0" max="100" value="excerpt_width_'.$post_type.'" %s>',
