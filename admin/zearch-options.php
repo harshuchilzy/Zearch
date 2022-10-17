@@ -134,7 +134,7 @@ class ZearchOptions {
                foreach ($taxonomy_objects as $taxonomy_object) {
 				add_settings_section(
 					'zearch_setting_cat_section', // id
-					'<span class="postype-title">TAXONOMIES</span>', // title
+					'', // title
 					array( $this, 'zearch_section_info' ), // callback
 					'zearch-admin' // page
 				);
