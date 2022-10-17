@@ -135,13 +135,13 @@ class ZearchOptions {
 			//    return;
                foreach ($taxonomy_objects as $taxonomy_object) {
 					add_settings_field(
-					$taxonomy_object , // id
-					$taxonomy_object , // title
-					array( $this, 'cats_callback' ), // callback
-					'zearch-admin', // page
-					'zearch_setting_section', // section
-					$taxonomy_object
-				);
+						$taxonomy_object , // id
+						'Taxonomies : <span class="dayz-postype">'.$taxonomy_object.'</span>', // title
+						array( $this, 'cats_callback' ), // callback
+						'zearch-admin', // page
+						'zearch_setting_section', // section
+						$taxonomy_object
+					);
 			   }
 			  
 
@@ -251,6 +251,7 @@ include('api-settings.php');
 <style>
 .dayz-zearch-form .form-table th{
   text-transform: uppercase;
+  width: 250px;
 }
 .dayz-zearch-form input[type=checkbox] + label {
   margin: 0.2em;
