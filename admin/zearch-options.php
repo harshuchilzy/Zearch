@@ -187,40 +187,40 @@ class ZearchOptions {
 		printf('<input type="checkbox" name="zearch_option_name[title_'.$post_type.']" id="title_'.$post_type.'" value="title_'.$post_type.'" %s> <label for="title_'.$post_type.'">Seachble</label>',
 		( isset( $this->zearch_options['title_'.$post_type] ) && $this->zearch_options['title_'.$post_type] === 'title_'.$post_type ) ? 'checked' : '' ); 
 		
-		// printf('<label style="margin-left:10px;" for="title_width_'.$post_type.'">Weight</label> <input type="range" name="zearch_option_name[title_'.$post_type.']" id="title_width_'.$post_type.'" min="0" max="100" value="title_width_'.$post_type.'" %s>',
-		// ( isset( $this->zearch_options[$post_type] ) && $this->zearch_options[$post_type] === $post_type ) ? '' : '' ); 
+		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[title_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
+		<span  class="slider_label"></span>', isset( $this->zearch_options['title_width_'.$post_type] ) ? esc_attr( $this->zearch_options['title_width_'.$post_type]) : '');
 	}
 
 	public function content_callback($post_type) {
 		printf('<input type="checkbox" name="zearch_option_name[content_'.$post_type.']" id="content_'.$post_type.'" value="content_'.$post_type.'" %s> <label for="content_'.$post_type.'">Seachble</label>',
 		( isset( $this->zearch_options['content_'.$post_type] ) && $this->zearch_options['content_'.$post_type] === 'content_'.$post_type ) ? 'checked' : '' ); 
 
-		// printf('<label style="margin-left:10px;" for="content_width_'.$post_type.'">Weight</label> <input type="range" name="zearch_option_name[content_'.$post_type.']" id="content_width_'.$post_type.'" min="0" max="100" value="title_width_'.$post_type.'" %s>',
-		// ( isset( $this->zearch_options[$post_type] ) && $this->zearch_options[$post_type] === $post_type ) ? '' : '' ); 
+		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[content_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
+		<span  class="slider_label"></span>', isset( $this->zearch_options['content_width_'.$post_type] ) ? esc_attr( $this->zearch_options['content_width_'.$post_type]) : '');
 	}
 
 	public function excerpt_callback($post_type) {
 		printf('<input type="checkbox" name="zearch_option_name[excerpt_'.$post_type.']" id="excerpt_'.$post_type.'" value="excerpt_'.$post_type.'" %s> <label for="excerpt_'.$post_type.'">Seachble</label>',
 		( isset( $this->zearch_options['excerpt_'.$post_type] ) && $this->zearch_options['excerpt_'.$post_type] === 'excerpt_'.$post_type ) ? 'checked' : '' ); 
 
-		// printf('<label style="margin-left:10px;" for="title_width_'.$post_type.'">Weight</label> <input type="range" name="zearch_option_name[title_'.$post_type.']" id="title_width_'.$post_type.'" min="0" max="100" value="title_width_'.$post_type.'" %s>',
-		// ( isset( $this->zearch_options[$post_type] ) && $this->zearch_options[$post_type] === $post_type ) ? '' : '' ); 
+		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[excerpt_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
+		<span  class="slider_label"></span>', isset( $this->zearch_options['excerpt_width_'.$post_type] ) ? esc_attr( $this->zearch_options['excerpt_width_'.$post_type]) : '');
 	}
 
 	public function author_callback($post_type) {
 		printf('<input type="checkbox" name="zearch_option_name[author_'.$post_type.']" id="author_'.$post_type.'" value="author_'.$post_type.'" %s> <label for="author_'.$post_type.'">Seachble</label>',
 		( isset( $this->zearch_options['author_'.$post_type] ) && $this->zearch_options['author_'.$post_type] === 'author_'.$post_type ) ? 'checked' : '' ); 
 
-		// printf('<label style="margin-left:10px;" for="excerpt_width_'.$post_type.'">Weight</label> <input type="range" name="zearch_option_name[title_'.$post_type.']" id="excerpt_width_'.$post_type.'" min="0" max="100" value="excerpt_width_'.$post_type.'" %s>',
-		// ( isset( $this->zearch_options[$post_type] ) && $this->zearch_options[$post_type] === $post_type ) ? '' : '' ); 
+		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[author_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
+		<span  class="slider_label"></span>', isset( $this->zearch_options['author_width_'.$post_type] ) ? esc_attr( $this->zearch_options['author_width_'.$post_type]) : '');
 	}
 
 	public function cats_callback($taxonomy_object) {
 		printf('<input type="checkbox" name="zearch_option_name[tax_'.$taxonomy_object.']" id="tax_'.$taxonomy_object.'" value="tax_'.$taxonomy_object.'" %s> <label for="tax_'.$taxonomy_object.'">Seachble</label>',
 		( isset( $this->zearch_options['tax_'.$taxonomy_object] ) && $this->zearch_options['tax_'.$taxonomy_object] === 'tax_'.$taxonomy_object ) ? 'checked' : '' ); 
 
-		// printf('<label style="margin-left:10px;" for="tax_width_'.$taxonomy_object.'">Weight</label> <input type="range" name="zearch_option_name[title_'.$taxonomy_object.']" id="tax_width_'.$taxonomy_object.'" min="0" max="100" value="tax_width_'.$taxonomy_object.'" %s>',
-		// ( isset( $this->zearch_options[$taxonomy_object] ) && $this->zearch_options[$taxonomy_object] === $taxonomy_object ) ? '' : '' ); 
+		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[tax_width_'.$taxonomy_object.']"  class="slider" min="0" max="100" value="%s">
+		<span  class="slider_label"></span>', isset( $this->zearch_options['tax_width_'.$taxonomy_object] ) ? esc_attr( $this->zearch_options['tax_width_'.$taxonomy_object]) : '');
 	}
 
 	
@@ -232,3 +232,20 @@ if ( is_admin() )
 
 //Api settings 
 include('api-settings.php');
+
+?>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+  $(function(){
+	$('.slider').on('input change', function(){
+		$(this).next($('.slider_label')).html(this.value);
+		
+	});
+	$('.slider_label').each(function(){
+		var value = $(this).prev().attr('value');
+		$(this).html(value);
+	});  
+	
+})
+</script>
+<?
