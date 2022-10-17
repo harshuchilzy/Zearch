@@ -42,7 +42,7 @@ class ZearchOptions {
         ?>
 
 		<div class="wrap dayz-zearch-form">
-			<h2>Zearch</h2>
+			<h2>Zearch Settings</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 			<form method="post" action="options.php">
@@ -75,25 +75,24 @@ class ZearchOptions {
 			'zearch_option_name', // option_name
 			array( $this, 'zearch_sanitize', $post_types ) // sanitize_callback
 		);
-
-		add_settings_section(
-			'zearch_setting_section', // id
-			'Settings', // title
-			array( $this, 'zearch_section_info' ), // callback
-			'zearch-admin' // page
-		);
-
-	   
+            
 		 if ( $post_types ) { // If there are any custom public post types.
 		     
 			 foreach ( $post_types  as $post_type ) {
-			
+				
+				add_settings_section(
+					'zearch_setting_section'.$post_type, // id
+					'<span class="postype-title">'.$post_type.'</span>', // title
+					array( $this, 'zearch_section_info' ), // callback
+					'zearch-admin' // page
+				);
+
 				add_settings_field(
 					'title_'.$post_type , // id
 					'Title : <span class="dayz-postype">'.$post_type.'</span>', // title
 					array( $this, 'title_callback' ), // callback
 					'zearch-admin', // page
-					'zearch_setting_section', // section
+					'zearch_setting_section'.$post_type, // section
 					$post_type
 				);
 
@@ -102,7 +101,7 @@ class ZearchOptions {
 					'Content : <span class="dayz-postype">'.$post_type.'</span>', // title
 					array( $this, 'content_callback' ), // callback
 					'zearch-admin', // page
-					'zearch_setting_section', // section
+					'zearch_setting_section'.$post_type, // section
 					$post_type
 				);
 
@@ -111,7 +110,7 @@ class ZearchOptions {
 					'Excerpt : <span class="dayz-postype">'.$post_type.'</span>', // title
 					array( $this, 'excerpt_callback' ), // callback
 					'zearch-admin', // page
-					'zearch_setting_section', // section
+					'zearch_setting_section'.$post_type, // section
 					$post_type
 				);
 
@@ -120,10 +119,9 @@ class ZearchOptions {
 					'Author : <span class="dayz-postype">'.$post_type.'</span>', // title
 					array( $this, 'author_callback' ), // callback
 					'zearch-admin', // page
-					'zearch_setting_section', // section
+					'zearch_setting_section'.$post_type, // section
 					$post_type
 				);
-
 				
 
 			   global $wp_post_types;
@@ -134,19 +132,22 @@ class ZearchOptions {
 			//    print_r($taxonomy_objects[0]);
 			//    return;
                foreach ($taxonomy_objects as $taxonomy_object) {
+				add_settings_section(
+					'zearch_setting_cat_section', // id
+					'<span class="postype-title">TAXONOMIES</span>', // title
+					array( $this, 'zearch_section_info' ), // callback
+					'zearch-admin' // page
+				);
 					add_settings_field(
 						$taxonomy_object , // id
 						'Taxonomies : <span class="dayz-postype">'.$taxonomy_object.'</span>', // title
 						array( $this, 'cats_callback' ), // callback
 						'zearch-admin', // page
-						'zearch_setting_section', // section
+						'zearch_setting_cat_section', // section
 						$taxonomy_object
 					);
 			   }
 			  
-
-		
-
 			}
 			
 
@@ -181,9 +182,7 @@ class ZearchOptions {
 		
 	}
 	
-
 	public function title_callback($post_type) {
-
 		printf('<input type="checkbox" name="zearch_option_name[title_'.$post_type.']" id="title_'.$post_type.'" value="title_'.$post_type.'" %s> <label for="title_'.$post_type.'">Searchable</label> |',
 		( isset( $this->zearch_options['title_'.$post_type] ) && $this->zearch_options['title_'.$post_type] === 'title_'.$post_type ) ? 'checked' : '' ); 
 		
@@ -212,7 +211,7 @@ class ZearchOptions {
 		( isset( $this->zearch_options['author_'.$post_type] ) && $this->zearch_options['author_'.$post_type] === 'author_'.$post_type ) ? 'checked' : '' ); 
 
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[author_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
-		<span  class="slider_label"></span>', isset( $this->zearch_options['author_width_'.$post_type] ) ? esc_attr( $this->zearch_options['author_width_'.$post_type]) : '');
+		<span class="slider_label"></span>', isset( $this->zearch_options['author_width_'.$post_type] ) ? esc_attr( $this->zearch_options['author_width_'.$post_type]) : '');
 	}
 
 	public function cats_callback($taxonomy_object) {
@@ -305,7 +304,7 @@ include('api-settings.php');
     font-weight: 500;
     padding: 5px;
 }
-.slider {
+.dayz-zearch-form .slider {
   -webkit-appearance: none;
   height: 10px;
   width:20%;
@@ -316,11 +315,11 @@ include('api-settings.php');
   transition: opacity .2s;
 }
 
-.slider:hover {
+.dayz-zearch-form .slider:hover {
   opacity: 1;
 }
 
-.slider::-webkit-slider-thumb {
+.dayz-zearch-form .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 15px;
@@ -329,16 +328,24 @@ include('api-settings.php');
   cursor: pointer;
 }
 
-.slider::-moz-range-thumb {
+.dayz-zearch-form .slider::-moz-range-thumb {
   width: 15px;
   height: 15px;
   background: #04AA6D;
   cursor: pointer;
 }
-.dayz-postype{
+.dayz-zearch-form .dayz-postype{
 	color: 04AA6D;
     border: 1px solid;
     padding: 5px;
+}
+.dayz-zearch-form .postype-title{
+	background: #04AA6D;
+    color: white;
+    font-size: 30px;
+    padding-left: 50px;
+    text-transform: uppercase;
+    padding-right: 50px;
 }
 </style>
 <?
