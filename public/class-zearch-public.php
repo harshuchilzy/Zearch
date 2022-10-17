@@ -56,10 +56,13 @@ class Zearch_Public
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		add_action( 'wp_footer', [ $this, 'results_template'] );
+		add_action('wp_footer', [$this, 'results_template']);
 
 		add_action('wp_ajax_query_ezearch', [$this, 'query_ezearch']);
 		add_action('wp_ajax_nopriv_query_ezearch', [$this, 'query_ezearch']);
+
+		add_action('wp_ajax_query_ezearch_by', [$this, 'query_ezearch_by']);
+		add_action('wp_ajax_nopriv_query_ezearch_by', [$this, 'query_ezearch_by']);
 		// add_shortcode('dayz_product_cats', [$this, 'dayz_product_cats']);
 		add_shortcode('dayz_product_brands', [$this, 'dayz_product_brands']);
 	}
@@ -120,9 +123,9 @@ class Zearch_Public
 		$settings = get_option('ezearch');
 
 		$searchables = '';
-		foreach($settings['weighting'] as $post_type => $data){
-			foreach($data as $field => $settings){
-				if($settings['enabled'] == 'on'){
+		foreach ($settings['weighting'] as $post_type => $data) {
+			foreach ($data as $field => $settings) {
+				if ($settings['enabled'] == 'on') {
 					$searchables .= '"' . $field . '^' . $settings['weight'] . '",';
 				}
 			}
@@ -139,10 +142,10 @@ class Zearch_Public
 				"from":0,"size":8,"sort":[{"_score":{"order":"desc"}}],
 				"query": {
 					"query_string": {
-						"query":"'.$query.'",
+						"query":"' . $query . '",
 						"type":"phrase",
 						"fields":[
-						   '.$searchables.'
+						   ' . $searchables . '
 							"terms.ep_custom_result.name^9999"
 						],
 						"boost":3
@@ -151,41 +154,51 @@ class Zearch_Public
 			}'
 		];
 		$response = $client->search($params);
-		// echo $response;
-
 		$response = json_decode($response);
 		$hits = $response->hits->hits;
-		$ids = array();
-		// $html = '';
-		
-		// foreach($hits as $result){
-		// 	$ids[] = $result->_source->post_id;
-		// }
-		// $template = wc_get_template_part( 'content', 'product' );
-		// $data = array(
-		// 	'ids' => $ids,
-		// 	'template' => $template
-		// );
-		// $args = array(
-		// 	'post_type' => 'product',
-		// 	'post__in' => $ids,
-		// );
-		// $products = new WP_Query( $args );
-		// ob_start();
-		// // Standard loop
-		// if ( $products->have_posts() ) :
-		// 	woocommerce_product_loop_start();
-		// 	while ( $products->have_posts() ) : $products->the_post();
-		// 		// do_action( 'woocommerce_shop_loop' );
-		// 		wc_get_template_part( 'content', 'product' );
-		// 	endwhile;
-		// 	woocommerce_product_loop_end();
-        //     woocommerce_reset_loop();
-		// 	wp_reset_postdata();
+		echo json_encode($hits);
+		wp_die();
+	}
 
-		// endif;
-		
-		// $html = ob_get_clean();
+	public function query_ezearch_by()
+	{
+		$query = $_POST['search_values'];
+		$settings = get_option('ezearch');
+
+		$searchables = '';
+		foreach ($settings['weighting'] as $post_type => $data) {
+			foreach ($data as $field => $settings) {
+				if ($settings['enabled'] == 'on') {
+					$searchables .= '"' . $field . '^' . $settings['weight'] . '",';
+				}
+			}
+		}
+
+		$client = ClientBuilder::create()
+			->setHosts(['http://88.198.32.151:9200'])
+			// ->setApiKey()
+			->build();
+		$params = [
+			'index' => 'deurbeslaggigantnl-post-1', // get index dynamically
+			'type' => 'product',
+			'body' => '{
+				"from":0,"size":8,"sort":[{"_score":{"order":"desc"}}],
+				"query": {
+					"query_string": {
+						"query":"' . $query . '",
+						"type":"phrase",
+						"fields":[
+						   "meta._price.value^100",
+							"terms.ep_custom_result.name^9999"
+						],
+						"boost":3
+					}
+				}
+			}'
+		];
+		$response = $client->search($params);
+		$response = json_decode($response);
+		$hits = $response->hits->hits;
 		echo json_encode($hits);
 		wp_die();
 	}
@@ -256,25 +269,26 @@ class Zearch_Public
 	}
 }
 
-function ezearch_get_price_range() {
+function ezearch_get_price_range()
+{
 	global $wpdb;
 
 	$args = WC()->query->get_main_query();
 
-	$tax_query  = isset( $args->tax_query->queries ) ? $args->tax_query->queries : array();
-	$meta_query = isset( $args->query_vars['meta_query'] ) ? $args->query_vars['meta_query'] : array();
+	$tax_query  = isset($args->tax_query->queries) ? $args->tax_query->queries : array();
+	$meta_query = isset($args->query_vars['meta_query']) ? $args->query_vars['meta_query'] : array();
 
-	foreach ( $meta_query + $tax_query as $key => $query ) {
-		if ( ! empty( $query['price_filter'] ) || ! empty( $query['rating_filter'] ) ) {
-			unset( $meta_query[ $key ] );
+	foreach ($meta_query + $tax_query as $key => $query) {
+		if (!empty($query['price_filter']) || !empty($query['rating_filter'])) {
+			unset($meta_query[$key]);
 		}
 	}
 
-	$meta_query = new \WP_Meta_Query( $meta_query );
-	$tax_query  = new \WP_Tax_Query( $tax_query );
+	$meta_query = new \WP_Meta_Query($meta_query);
+	$tax_query  = new \WP_Tax_Query($tax_query);
 
-	$meta_query_sql = $meta_query->get_sql( 'post', $wpdb->posts, 'ID' );
-	$tax_query_sql  = $tax_query->get_sql( $wpdb->posts, 'ID' );
+	$meta_query_sql = $meta_query->get_sql('post', $wpdb->posts, 'ID');
+	$tax_query_sql  = $tax_query->get_sql($wpdb->posts, 'ID');
 
 	$sql  = "SELECT min( FLOOR( price_meta.meta_value ) ) as min_price, max( CEILING( price_meta.meta_value ) ) as max_price FROM {$wpdb->posts} ";
 	$sql .= " LEFT JOIN {$wpdb->postmeta} as price_meta ON {$wpdb->posts}.ID = price_meta.post_id " . $tax_query_sql['join'] . $meta_query_sql['join'];
@@ -285,15 +299,14 @@ function ezearch_get_price_range() {
 	$sql .= $tax_query_sql['where'] . $meta_query_sql['where'];
 
 	$search = \WC_Query::get_main_search_query_sql();
-	if ( $search ) {
+	if ($search) {
 		$sql .= ' AND ' . $search;
 	}
 
-	$prices = $wpdb->get_row( $sql ); // WPCS: unprepared SQL ok.
+	$prices = $wpdb->get_row($sql); // WPCS: unprepared SQL ok.
 
 	return [
-		'min' => floor( $prices->min_price ),
-		'max' => ceil( $prices->max_price )
+		'min' => floor($prices->min_price),
+		'max' => ceil($prices->max_price)
 	];
 }
-

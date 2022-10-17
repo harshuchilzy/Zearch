@@ -28,22 +28,7 @@ class ZearchOptions
 	public function zearch_create_admin_page()
 	{
 		$this->zearch_options = get_option('ezearch');
-
-		// print_r($this->zearch_options);
-		// return; 
-
-		$client = ClientBuilder::create()
-			->setHosts(['http://88.198.32.151:9200'])
-			// ->setApiKey()
-			->build();
-
-		$response = $client->info();
-		// echo '<pre>';
-		// print_r($response);
-		// echo '</pre>';
-		// echo $response['version']['number']; // 8.0.0
-
-?>
+		?>
 
 		<div class="wrap dayz-zearch-form">
 			<h2>Zearch Settings</h2>
@@ -61,12 +46,8 @@ class ZearchOptions
 
 	public function zearch_page_init()
 	{
-
-
-
 		$args = array(
 			'public'   => true,
-			'_builtin' => true,
 		);
 
 		$output = 'names'; // 'names' or 'objects' (default: 'names')
@@ -129,25 +110,23 @@ class ZearchOptions
 					$post_type
 				);
 
-
-
-				$objs = $wp_post_types[$post_type];
-				$taxonomy_objects = get_object_taxonomies($post_type);
-				$name = $objs->taxonomies;
+				// $objs = $wp_post_types[$post_type];
+				$taxonomy_objects = get_object_taxonomies(array( 'post_type' => $post_type ));
+				// $name = $objs->taxonomies;
 
 				foreach ($taxonomy_objects as $taxonomy_object) {
 					add_settings_section(
-						'zearch_setting_cat_section', // id
+						'zearch_setting_cat_section_' . sanitize_title($post_type), // id
 						'', // title
 						array($this, 'zearch_section_info'), // callback
 						'zearch-admin' // page
 					);
 					add_settings_field(
 						$taxonomy_object, // id
-						'Taxonomy (' . $taxonomy_object . ') :', // title
+						$taxonomy_object , // title
 						array($this, 'cats_callback'), // callback
 						'zearch-admin', // page
-						'zearch_setting_cat_section', // section
+						'zearch_setting_cat_section_' . sanitize_title($post_type), // section
 						array('taxonomy' => $taxonomy_object, 'post_type' => $post_type)
 					);
 				}
