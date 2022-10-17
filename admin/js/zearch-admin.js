@@ -35,6 +35,7 @@
 
 
 jQuery(function($){
+	
 	$('.slider').on('input change', function(){
 		$(this).next($('.slider_label')).html(this.value);
 		

@@ -187,7 +187,7 @@ class ZearchOptions {
 		( isset( $this->zearch_options['title_'.$post_type] ) && $this->zearch_options['title_'.$post_type] === 'title_'.$post_type ) ? 'checked' : '' ); 
 		
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[title_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
-		<span  class="slider_label"></span>', isset( $this->zearch_options['title_width_'.$post_type] ) ? esc_attr( $this->zearch_options['title_width_'.$post_type]) : '');
+		<p  class="slider_label"></p>', isset( $this->zearch_options['title_width_'.$post_type] ) ? esc_attr( $this->zearch_options['title_width_'.$post_type]) : '');
 	}
 
 	public function content_callback($post_type) {
@@ -195,7 +195,7 @@ class ZearchOptions {
 		( isset( $this->zearch_options['content_'.$post_type] ) && $this->zearch_options['content_'.$post_type] === 'content_'.$post_type ) ? 'checked' : '' ); 
 
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[content_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
-		<span  class="slider_label"></span>', isset( $this->zearch_options['content_width_'.$post_type] ) ? esc_attr( $this->zearch_options['content_width_'.$post_type]) : '');
+		<p  class="slider_label"></p>', isset( $this->zearch_options['content_width_'.$post_type] ) ? esc_attr( $this->zearch_options['content_width_'.$post_type]) : '');
 	}
 
 	public function excerpt_callback($post_type) {
@@ -203,7 +203,7 @@ class ZearchOptions {
 		( isset( $this->zearch_options['excerpt_'.$post_type] ) && $this->zearch_options['excerpt_'.$post_type] === 'excerpt_'.$post_type ) ? 'checked' : '' ); 
 
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[excerpt_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
-		<span  class="slider_label"></span>', isset( $this->zearch_options['excerpt_width_'.$post_type] ) ? esc_attr( $this->zearch_options['excerpt_width_'.$post_type]) : '');
+		<p  class="slider_label"></p>', isset( $this->zearch_options['excerpt_width_'.$post_type] ) ? esc_attr( $this->zearch_options['excerpt_width_'.$post_type]) : '');
 	}
 
 	public function author_callback($post_type) {
@@ -211,7 +211,7 @@ class ZearchOptions {
 		( isset( $this->zearch_options['author_'.$post_type] ) && $this->zearch_options['author_'.$post_type] === 'author_'.$post_type ) ? 'checked' : '' ); 
 
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[author_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
-		<span  class="slider_label"></span>', isset( $this->zearch_options['author_width_'.$post_type] ) ? esc_attr( $this->zearch_options['author_width_'.$post_type]) : '');
+		<p  class="slider_label"></p>', isset( $this->zearch_options['author_width_'.$post_type] ) ? esc_attr( $this->zearch_options['author_width_'.$post_type]) : '');
 	}
 
 	public function cats_callback($taxonomy_object) {
@@ -219,7 +219,7 @@ class ZearchOptions {
 		( isset( $this->zearch_options['tax_'.$taxonomy_object] ) && $this->zearch_options['tax_'.$taxonomy_object] === 'tax_'.$taxonomy_object ) ? 'checked' : '' ); 
 
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[tax_width_'.$taxonomy_object.']"  class="slider" min="0" max="100" value="%s">
-		<span  class="slider_label"></span>', isset( $this->zearch_options['tax_width_'.$taxonomy_object] ) ? esc_attr( $this->zearch_options['tax_width_'.$taxonomy_object]) : '');
+		<p  class="slider_label"></p>', isset( $this->zearch_options['tax_width_'.$taxonomy_object] ) ? esc_attr( $this->zearch_options['tax_width_'.$taxonomy_object]) : '');
 	}
 
 	

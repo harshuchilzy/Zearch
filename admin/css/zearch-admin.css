@@ -7,6 +7,10 @@
     text-transform: uppercase;
     width: 250px;
   }
+  .dayz-zearch-form .form-table td{
+    display: flex;
+    align-items: center;
+  }
   .dayz-zearch-form input[type=checkbox] + label {
     margin: 0.2em;
     cursor: pointer;
@@ -53,11 +57,16 @@
     border-color: #bfb;
   }
   .dayz-zearch-form .slider_label{
-      background: #bfb;
-      border: 1px solid;
-      border-radius: 100%;
-      font-weight: 500;
-      padding: 5px;
+    background: #bfb;
+    border: 1px solid;
+    border-radius: 100%;
+    font-weight: 500;
+    padding: 5px;
+    line-height: 29px;
+    width: 28px;
+    text-align: center;
+    height: 28px;
+    margin-left: 10px;
   }
   .dayz-zearch-form .slider {
     -webkit-appearance: none;
