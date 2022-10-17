@@ -2,3 +2,112 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+ .dayz-zearch-form .form-table th{
+    text-transform: uppercase;
+    width: 250px;
+  }
+  .dayz-zearch-form .form-table td{
+    display: flex;
+    align-items: center;
+  }
+  .dayz-zearch-form input[type=checkbox] + label {
+    margin: 0.2em;
+    cursor: pointer;
+    padding: 0.2em;
+  }
+  
+  .dayz-zearch-form input[type=checkbox] {
+    display: none !important;
+  }
+  
+  .dayz-zearch-form input[type=checkbox] + label:before {
+    content: "\2714";
+    border: 0.1em solid #000;
+    border-radius: 0.2em;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    padding-left: 0.2em;
+    padding-bottom: 0.3em;
+    margin-right: 0.2em;
+    vertical-align: bottom;
+    color: transparent;
+    transition: .2s;
+  }
+  
+  .dayz-zearch-form input[type=checkbox] + label:active:before {
+    transform: scale(0);
+  }
+  
+  .dayz-zearch-form input[type=checkbox]:checked + label:before {
+    background-color: MediumSeaGreen;
+    border-color: MediumSeaGreen;
+    color: #fff;
+  }
+  
+  .dayz-zearch-form input[type=checkbox]:disabled + label:before {
+    transform: scale(1);
+    border-color: #aaa;
+  }
+  
+  .dayz-zearch-form input[type=checkbox]:checked:disabled + label:before {
+    transform: scale(1);
+    background-color: #bfb;
+    border-color: #bfb;
+  }
+  .dayz-zearch-form .slider_label{
+    background: #bfb;
+    border: 1px solid;
+    border-radius: 100%;
+    font-weight: 500;
+    padding: 5px;
+    line-height: 29px;
+    width: 28px;
+    text-align: center;
+    height: 28px;
+    margin-left: 10px;
+  }
+  .dayz-zearch-form .slider {
+    -webkit-appearance: none;
+    height: 10px;
+    width:20%;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  .dayz-zearch-form .slider:hover {
+    opacity: 1;
+  }
+  
+  .dayz-zearch-form .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+  }
+  
+  .dayz-zearch-form .slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #04AA6D;
+    cursor: pointer;
+  }
+  .dayz-zearch-form .dayz-postype{
+      color: #04AA6D;
+      border: 1px solid;
+      padding: 5px;
+  }
+  .dayz-zearch-form .postype-title{
+      background: #04AA6D;
+      color: white;
+      font-size: 30px;
+      padding-left: 50px;
+      text-transform: uppercase;
+      padding-right: 50px;
+  }

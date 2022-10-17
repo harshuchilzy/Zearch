@@ -74,6 +74,7 @@ class Zearch_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/zearch-admin.css', array(), $this->version, 'all' );
+		
 
 	}
 
@@ -97,6 +98,7 @@ class Zearch_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/zearch-admin.js', array( 'jquery' ), $this->version, false );
+		
 
 	}
 
