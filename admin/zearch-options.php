@@ -41,7 +41,7 @@ class ZearchOptions {
 
         ?>
 
-		<div class="wrap">
+		<div class="wrap dayz-zearch-form">
 			<h2>Zearch</h2>
 			<p></p>
 			<?php settings_errors(); ?>
@@ -90,7 +90,7 @@ class ZearchOptions {
 			
 				add_settings_field(
 					'title_'.$post_type , // id
-					'Title '.$post_type , // title
+					'Title : <span class="dayz-postype">'.$post_type.'</span>', // title
 					array( $this, 'title_callback' ), // callback
 					'zearch-admin', // page
 					'zearch_setting_section', // section
@@ -99,7 +99,7 @@ class ZearchOptions {
 
 				add_settings_field(
 					'content_'.$post_type , // id
-					'Content '.$post_type , // title
+					'Content : <span class="dayz-postype">'.$post_type.'</span>', // title
 					array( $this, 'content_callback' ), // callback
 					'zearch-admin', // page
 					'zearch_setting_section', // section
@@ -108,7 +108,7 @@ class ZearchOptions {
 
 				add_settings_field(
 					'excerpt_'.$post_type , // id
-					'Excerpt '.$post_type , // title
+					'Excerpt : <span class="dayz-postype">'.$post_type.'</span>', // title
 					array( $this, 'excerpt_callback' ), // callback
 					'zearch-admin', // page
 					'zearch_setting_section', // section
@@ -117,7 +117,7 @@ class ZearchOptions {
 
 				add_settings_field(
 					'author_'.$post_type , // id
-					'Author '.$post_type , // title
+					'Author : <span class="dayz-postype">'.$post_type.'</span>', // title
 					array( $this, 'author_callback' ), // callback
 					'zearch-admin', // page
 					'zearch_setting_section', // section
@@ -184,7 +184,7 @@ class ZearchOptions {
 
 	public function title_callback($post_type) {
 
-		printf('<input type="checkbox" name="zearch_option_name[title_'.$post_type.']" id="title_'.$post_type.'" value="title_'.$post_type.'" %s> <label for="title_'.$post_type.'">Seachble</label>',
+		printf('<input type="checkbox" name="zearch_option_name[title_'.$post_type.']" id="title_'.$post_type.'" value="title_'.$post_type.'" %s> <label for="title_'.$post_type.'">Searchable</label> |',
 		( isset( $this->zearch_options['title_'.$post_type] ) && $this->zearch_options['title_'.$post_type] === 'title_'.$post_type ) ? 'checked' : '' ); 
 		
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[title_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
@@ -192,7 +192,7 @@ class ZearchOptions {
 	}
 
 	public function content_callback($post_type) {
-		printf('<input type="checkbox" name="zearch_option_name[content_'.$post_type.']" id="content_'.$post_type.'" value="content_'.$post_type.'" %s> <label for="content_'.$post_type.'">Seachble</label>',
+		printf('<input type="checkbox" name="zearch_option_name[content_'.$post_type.']" id="content_'.$post_type.'" value="content_'.$post_type.'" %s> <label for="content_'.$post_type.'">Searchable</label> |',
 		( isset( $this->zearch_options['content_'.$post_type] ) && $this->zearch_options['content_'.$post_type] === 'content_'.$post_type ) ? 'checked' : '' ); 
 
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[content_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
@@ -200,7 +200,7 @@ class ZearchOptions {
 	}
 
 	public function excerpt_callback($post_type) {
-		printf('<input type="checkbox" name="zearch_option_name[excerpt_'.$post_type.']" id="excerpt_'.$post_type.'" value="excerpt_'.$post_type.'" %s> <label for="excerpt_'.$post_type.'">Seachble</label>',
+		printf('<input type="checkbox" name="zearch_option_name[excerpt_'.$post_type.']" id="excerpt_'.$post_type.'" value="excerpt_'.$post_type.'" %s> <label for="excerpt_'.$post_type.'">Searchable</label> |',
 		( isset( $this->zearch_options['excerpt_'.$post_type] ) && $this->zearch_options['excerpt_'.$post_type] === 'excerpt_'.$post_type ) ? 'checked' : '' ); 
 
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[excerpt_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
@@ -208,7 +208,7 @@ class ZearchOptions {
 	}
 
 	public function author_callback($post_type) {
-		printf('<input type="checkbox" name="zearch_option_name[author_'.$post_type.']" id="author_'.$post_type.'" value="author_'.$post_type.'" %s> <label for="author_'.$post_type.'">Seachble</label>',
+		printf('<input type="checkbox" name="zearch_option_name[author_'.$post_type.']" id="author_'.$post_type.'" value="author_'.$post_type.'" %s> <label for="author_'.$post_type.'">Searchable</label> |',
 		( isset( $this->zearch_options['author_'.$post_type] ) && $this->zearch_options['author_'.$post_type] === 'author_'.$post_type ) ? 'checked' : '' ); 
 
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[author_width_'.$post_type.']"  class="slider" min="0" max="100" value="%s">
@@ -216,7 +216,7 @@ class ZearchOptions {
 	}
 
 	public function cats_callback($taxonomy_object) {
-		printf('<input type="checkbox" name="zearch_option_name[tax_'.$taxonomy_object.']" id="tax_'.$taxonomy_object.'" value="tax_'.$taxonomy_object.'" %s> <label for="tax_'.$taxonomy_object.'">Seachble</label>',
+		printf('<input type="checkbox" name="zearch_option_name[tax_'.$taxonomy_object.']" id="tax_'.$taxonomy_object.'" value="tax_'.$taxonomy_object.'" %s> <label for="tax_'.$taxonomy_object.'">Searchable</label> |',
 		( isset( $this->zearch_options['tax_'.$taxonomy_object] ) && $this->zearch_options['tax_'.$taxonomy_object] === 'tax_'.$taxonomy_object ) ? 'checked' : '' ); 
 
 		printf('<label for="range_weight" style="margin-left:10px;">Weight: </label> <input type="range" name="zearch_option_name[tax_width_'.$taxonomy_object.']"  class="slider" min="0" max="100" value="%s">
@@ -248,4 +248,96 @@ include('api-settings.php');
 	
 })
 </script>
+<style>
+.dayz-zearch-form .form-table th{
+  text-transform: uppercase;
+}
+.dayz-zearch-form input[type=checkbox] + label {
+  margin: 0.2em;
+  cursor: pointer;
+  padding: 0.2em;
+}
+
+.dayz-zearch-form input[type=checkbox] {
+  display: none !important;
+}
+
+.dayz-zearch-form input[type=checkbox] + label:before {
+  content: "\2714";
+  border: 0.1em solid #000;
+  border-radius: 0.2em;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  padding-left: 0.2em;
+  padding-bottom: 0.3em;
+  margin-right: 0.2em;
+  vertical-align: bottom;
+  color: transparent;
+  transition: .2s;
+}
+
+.dayz-zearch-form input[type=checkbox] + label:active:before {
+  transform: scale(0);
+}
+
+.dayz-zearch-form input[type=checkbox]:checked + label:before {
+  background-color: MediumSeaGreen;
+  border-color: MediumSeaGreen;
+  color: #fff;
+}
+
+.dayz-zearch-form input[type=checkbox]:disabled + label:before {
+  transform: scale(1);
+  border-color: #aaa;
+}
+
+.dayz-zearch-form input[type=checkbox]:checked:disabled + label:before {
+  transform: scale(1);
+  background-color: #bfb;
+  border-color: #bfb;
+}
+.dayz-zearch-form .slider_label{
+	background: #bfb;
+    border: 1px solid;
+    border-radius: 100%;
+    font-weight: 500;
+    padding: 5px;
+}
+.slider {
+  -webkit-appearance: none;
+  height: 10px;
+  width:20%;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #04AA6D;
+  cursor: pointer;
+}
+.dayz-postype{
+	color: 04AA6D;
+    border: 1px solid;
+    padding: 5px;
+}
+</style>
 <?
