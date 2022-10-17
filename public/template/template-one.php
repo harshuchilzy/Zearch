@@ -1,4 +1,21 @@
+<?php 
+echo '<pre>';
+// print_r(get_option('ezearch')['weighting']);
+echo '</pre>';
+$searchables = '';
+foreach(get_option('ezearch')['weighting'] as $post_type => $data){
+    foreach($data as $field => $settings){
+        if($settings['enabled'] == 'on'){
+            $searchables .= '"' . $field . '^' . $settings['weight'] . '",';
+        }
+    }
+}
+
+echo $searchables;
+
+?>
 <section class="dayz-products-dropdown p-5 zearch-wrapper" style="display: none">
+
     <div class="container bg-white shadow-lg rounded-lg mx-auto">
         <div class="flex gap-4 p-5">
             <div class="dayz-search-sidebar w-1/6 p-5">
@@ -9,12 +26,6 @@
                     <div class="collapse-content">
                     <?php $price_range = ezearch_get_price_range(); ?>
                         <input id="ezearch_price_ranger" type="range" min="<?php $price_range['min'] ?>" max="<?php $price_range['max'] ?>" value="" class="range" step="1" />
-                        <div class="w-full flex justify-between text-xs px-2">
-                        <?php 
-                        // for($i = $price_range['min']; $i >= $price_range['max'], $i++;){
-                        //     echo '<span>' . wc_price($i) . '</span>';
-                        // } ?>
-                        </div>
                     </div>
                 </div>
                 <div tabindex="0" class="collapse collapse-arrow  rounded-box">

@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
       $.ajax({
         type: "post",
         url: DayzAjax.dayz_ajaxurl,
-        data: { action: "query_zearch", search_values: search_values },
+        data: { action: "query_ezearch", search_values: search_values },
         success: function (response) {
           var zearchTemplate = wp.template("ezearch-template");
           console.log(zearchTemplate);
@@ -35,6 +35,14 @@ jQuery(document).ready(function ($) {
     } else {
       console.log("type more than 3 letters");
     }
+  });
+
+  $('#ezearch_price_ranger').on('change', function(){
+	$.ajax({
+        type: "post",
+        url: DayzAjax.dayz_ajaxurl,
+        data: { action: "query_zearch", search_values: search_values },
+	});
   });
 
   //filter products cats

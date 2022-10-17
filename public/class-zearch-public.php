@@ -117,6 +117,16 @@ class Zearch_Public
 	public function query_ezearch()
 	{
 		$query = $_POST['search_values'];
+		$settings = get_option('ezearch');
+
+		$searchables = '';
+		foreach($settings['weighting'] as $post_type => $data){
+			foreach($data as $field => $settings){
+				if($settings['enabled'] == 'on'){
+					$searchables .= '"' . $field . '^' . $settings['weight'] . '",';
+				}
+			}
+		}
 
 		$client = ClientBuilder::create()
 			->setHosts(['http://88.198.32.151:9200'])
@@ -124,7 +134,7 @@ class Zearch_Public
 			->build();
 		$params = [
 			'index' => 'deurbeslaggigantnl-post-1', // get index dynamically
-			'type' => 'post',
+			'type' => 'product',
 			'body' => '{
 				"from":0,"size":8,"sort":[{"_score":{"order":"desc"}}],
 				"query": {
@@ -132,12 +142,8 @@ class Zearch_Public
 						"query":"'.$query.'",
 						"type":"phrase",
 						"fields":[
-						   "post_title^1",
-						   "post_excerpt^1",
-						   "post_content^1",
-						   "terms.category.name^1",
-						   "terms.post_tag.name^1",
-						   "terms.ep_custom_result.name^9999"
+						   '.$searchables.'
+							"terms.ep_custom_result.name^9999"
 						],
 						"boost":3
 					}
