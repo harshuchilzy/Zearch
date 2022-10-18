@@ -98,30 +98,28 @@ class Zearch_Public
 	 */
 	public function enqueue_scripts()
 	{
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Zearch_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Zearch_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 		// wp_enqueue_script( 'underscore' );
 		// wp_enqueue_script( 'wp-util' );
+		wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_script( 'jquery-ui-accordion' );
+
+
 		wp_enqueue_script('zearch-public', plugin_dir_url(__FILE__) . 'js/zearch-public.js', array('jquery', 'wp-util'), $this->version, false);
 		wp_localize_script('zearch-public', 'DayzAjax', array('dayz_ajaxurl' => admin_url('admin-ajax.php')));
 		wp_enqueue_script('zearch-public');
+		wp_enqueue_script('zearch-infinite-scroll', plugin_dir_url(__FILE__) . 'js/scrollpagination.js', array(), $this->version, false);
+
+		// Test ES NPM
+		// wp_enqueue_script('ezearch-es', plugin_dir_url(dirname( __FILE__ )) . 'build/ezearch-es.js', array(), $this->version, false);
+
 	}
 
 	public function query_ezearch()
 	{
 		$query = $_POST['search_values'];
 		$settings = get_option('ezearch');
-
+		$from = $_POST['from'];
+		$size = $_POST['size'];
 		$searchables = '';
 		foreach ($settings['weighting'] as $post_type => $data) {
 			foreach ($data as $field => $settings) {
@@ -139,7 +137,7 @@ class Zearch_Public
 			'index' => 'deurbeslaggigantnl-post-1', // get index dynamically
 			'type' => 'product',
 			'body' => '{
-				"from":0,"size":8,"sort":[{"_score":{"order":"desc"}}],
+				"from":'.$from.',"size":'.$size.',"sort":[{"_score":{"order":"desc"}}],
 				"query": {
 					"query_string": {
 						"query":"' . $query . '",
@@ -163,6 +161,7 @@ class Zearch_Public
 	public function query_ezearch_by()
 	{
 		$query = $_POST['search_values'];
+		$taxo = $_POST['taxoTerms'];
 		$settings = get_option('ezearch');
 
 		$searchables = '';
@@ -174,6 +173,28 @@ class Zearch_Public
 			}
 		}
 
+		$taxoQuery = '';
+		if(isset($taxo) and is_array($taxo)){
+			$count = 1;
+			foreach($taxo as $searchTerm){
+				if($count < count($taxo)){
+					$taxoQuery += ',';
+				}
+				$taxoQuery += '{
+					"multi_match":{
+					   "query":"'.$searchTerm['value'].'",
+					   "fields":[
+						  "'.$searchTerm['name'].'^100"
+					   ],
+					   "operator":"and",
+					   "boost":1,
+					   "fuzziness":"auto"
+					}
+				 }';
+				 $count++;
+			}
+		}
+
 		$client = ClientBuilder::create()
 			->setHosts(['http://88.198.32.151:9200'])
 			// ->setApiKey()
@@ -182,20 +203,63 @@ class Zearch_Public
 			'index' => 'deurbeslaggigantnl-post-1', // get index dynamically
 			'type' => 'product',
 			'body' => '{
-				"from":0,"size":8,"sort":[{"_score":{"order":"desc"}}],
-				"query": {
-					"query_string": {
-						"query":"' . $query . '",
-						"type":"phrase",
-						"fields":[
-						   "meta._price.value^100",
-							"terms.ep_custom_result.name^9999"
-						],
-						"boost":3
-					}
+				"from":0,
+				"size":8,
+				"sort":[
+				   {
+					  "_score":{
+						 "order":"desc"
+					  }
+				   }
+				],
+				"query":{
+				   "bool":{
+					  "must":[
+						 { "bool":{
+							   "must":[
+								  {
+									 "multi_match":{
+										"query":"'.$query.'",
+										"type":"phrase",
+										"fields":[
+										   '.$searchables.',
+										   "terms.ep_custom_result.name^9999"
+										],
+										"boost":3
+									 }
+								  }
+								  '.$taxoQuery.'
+							   ]
+							}
+						 }
+					  ],
+					  "filter":[
+						 {
+							"match":{
+							   "post_type.raw":"product"
+							}
+						 }
+					  ]
+				   }
 				}
-			}'
+			 }'
 		];
+
+		// {
+		// 	"from":0,"size":8,"sort":[{"_score":{"order":"desc"}}],
+		// 	"query": {
+		// 		"query_string": {
+		// 			"query":"' . $query . '",
+		// 			"type":"phrase",
+		// 			"fields":[
+		// 				"meta._price.value^100",
+		// 				"terms.ep_custom_result.name^9999"
+		// 			],
+		// 			"boost":3
+		// 		}
+		// 	}
+		// }
+
 		$response = $client->search($params);
 		$response = json_decode($response);
 		$hits = $response->hits->hits;

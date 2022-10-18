@@ -2,3 +2,25 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+ .ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
+    width: 100% !important;
+    background-color: #0d000066;
+    z-index: 9999;
+    position: fixed !important;
+    top: 0px !important;
+    padding: 30px;
+    max-height: 100vh;
+}
+.ui-dialog-titlebar.ui-corner-all.ui-widget-header.ui-helper-clearfix.ui-draggable-handle {
+    position: absolute;
+    top: 35px;
+    right: 20px;
+    background-color: #ccc;
+}
+.dayz-search-result{
+    height: calc(100vh - 110px);
+}
+
+.ui-accordion-content {
+    height: auto !important;
+}
