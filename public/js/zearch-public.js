@@ -15,19 +15,25 @@ jQuery(document).ready(function ($) {
 
   function eZearch() {
     if (query.length > 3) {
-      // $("#zearch_results").html("");
-      console.log("Searching " + query + ", from " + from + " Size " + size);
       $.ajax({
         type: "post",
         url: DayzAjax.dayz_ajaxurl,
         data: { action: "query_ezearch", search_values: query, from: from, size: size, taxoTerms: taxoTerms },
+        beforeSend: function( xhr ) {
+          var loadingTemplate = wp.template('ezearch-loader');
+          var i = 0;
+          while (i < 8) {
+            $("#zearch_results").append(loadingTemplate);
+            i++;
+          }
+        },
         success: function (response) {
-          // console.log(response)
+         
           var zearchTemplate = wp.template("ezearch-template");
           var hits = JSON.parse(response);
 
           const hit_results = hits;
-
+          $("#zearch_results").find('.loaders').remove();
           hit_results.forEach(function (hit_result) {
             console.log(hit_result);
 
@@ -47,11 +53,11 @@ jQuery(document).ready(function ($) {
 
           $(".zearch-wrapper").dialog({
             modal: true,
-            open: function(){
+            open: function () {
               // $('.ui-widget-content').not('.dayz-products-dropdown').bind('click',function(){
               //     $('.zearch-wrapper').dialog('close');
               // });
-          }
+            },
           });
           from = from + size;
           loading = false;
@@ -99,19 +105,14 @@ jQuery(document).ready(function ($) {
     });
   });
 
-  //filter products cats
-  // jQuery(".dayz_product_cat").click(function () {
-  //   alert(jQuery(this).val());
-  // });
-
-  var target = '#zearch_results';
-  $('.dayz-search-result').on("scroll", function () {
-    var mayLoadContent = (Math.ceil($('.dayz-search-result').scrollTop()) + 100) >= ($(target).height() - $('.dayz-search-result').height());
-    if(mayLoadContent){
+  var target = "#zearch_results";
+  $(".dayz-search-result").on("scroll", function () {
+    var mayLoadContent = Math.ceil($(".dayz-search-result").scrollTop()) + 100 >= $(target).height() - $(".dayz-search-result").height();
+    if (mayLoadContent) {
       if ($('.dayz-search-result input[name="s"]').val().length > 3) {
         query = $('.dayz-search-result input[name="s"]').val();
       }
-      if(loading == false){
+      if (loading == false) {
         console.log("Loading more");
         loading = true;
         eZearch();
@@ -130,17 +131,4 @@ jQuery(document).ready(function ($) {
     from = 0;
     eZearch();
   });
-
-  // $('.dayz-search-result').scrollPagination({
-  //   url: DayzAjax.dayz_ajaxurl,
-  //   data: { action: "query_ezearch", search_values: search_values, from: from, size: size, taxoTerms: taxoTerms },
-  //   // 'data': {
-  //   //   'page': 1, // which entry to load on init
-  //   //   'size': 10, // number of pages
-  //   // },
-  //   'scroller': $(".dayz-search-result"),
-  //   'heightOffset': 50,
-  //   'loading':'#loading',
-  //   'loadingText':'Wait a moment... it\'s loading!',
-  // });
 });

@@ -67,12 +67,12 @@ class EZearch {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'ZEARCH_VERSION' ) ) {
-			$this->version = ZEARCH_VERSION;
+		if ( defined( 'EZEARCH_VERSION' ) ) {
+			$this->version = EZEARCH_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '1.1.0';
 		}
-		$this->plugin_name = 'zearch';
+		$this->plugin_name = 'ezearch';
 
 		$this->load_dependencies();
 		$this->set_locale();

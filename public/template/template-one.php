@@ -1,7 +1,10 @@
 <!-- <label for="my-modal-3" class="btn modal-button">open modal</label> -->
 
 <!-- Put this part before </body> tag -->
-<div class="loading" id="loading"></div>
+
+<?php
+$settings = get_option('ezearch');
+?>
 
 <section class="container mx-auto dayz-products-dropdown p-5 zearch-wrapper overflow-y-auto" style="display: znone;">
     <div class="">
@@ -22,12 +25,14 @@
                     </div>
 
                     <?php
-                    // $taxonomy_objects = get_object_taxonomies(array( 'post_type' => 'product', 'hide_empty' => true ));
-                    $taxonomies = get_object_taxonomies('product', 'objects');
+                    $post_type = 'product';
+                    $taxonomies = get_object_taxonomies($post_type, 'objects');
 
-                    foreach ($taxonomies as $taxonomy) {
-                        // print_r($taxonomy); 
-                    ?>
+                    foreach ($taxonomies as $taxonomy) { 
+                        if(!isset($settings['weighting'][$post_type]['terms.'.$taxonomy->name.'.name']['enabled'])){
+                            continue;
+                        }
+                        ?>
                         <div class="text-2xl ezearch-sidebar-title font-medium mb-4">
                             <?php echo $taxonomy->label; ?>
                         </div>
@@ -72,38 +77,15 @@
                     <?php } ?>
                 </div>
                 <div class="dayz-search-result w-5/6 p-5 overflow-auto">
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="count p-4">
-                            <b class="mt-5">Results: <span id="zearch_result_count">0</span></b>
+                    <div class="grid grid-cols-3 gap-4 items-center">
+                        <div id="ezearch-form" class="p-4 col-span-2">
+                            <input type="text" placeholder="Search here" name="s" class="input input-bordered w-full" />
                         </div>
-                        <div id="ezearch-form">
-                            <?php get_search_form(); ?>
-                        </div>
-                        <div class="sort p-4">
-                            <select class="select select-bordered w-full max-w-xs bg-white float-right">
-                                <option disabled selected>Sort by</option>
-                                <option>Han Solo</option>
-                                <option>Greedo</option>
-                            </select>
+                        <div class="count p-4 text-right">
+                            <b class="mt-5 text-right">Results: <span id="zearch_result_count">0</span></b>
                         </div>
                     </div>
-                    <div class="grid grid-cols-4 gap-4 h-auto" id="zearch_results">
-                        <div>
-                            <div class="bg-black shadow-md m-3 rounded-md result-item animate-pulse">
-                                <div class="image-area flex justify-center h-40">
-                                    <div class="w-full rounded h-full bg-slate-700"></div>
-                                </div>
-                                <div class="details-area bg-black text-white p-4">
-                                    <div class="bg-gray-200 h-6 rounded dark:bg-gray-600 w-full mb-2"></div>
-                                    <div class="bg-gray-300 h-12 rounded dark:bg-gray-700 w-full"></div>
-                                </div>
-                                <div class="add-to-cart grid grid-cols-3 gap-4 items-center p-4">
-                                    <div class=" bg-gray-200 rounded h-6 dark:bg-gray-700 w-auto"></div>
-                                    <div class="bg-gray-300 rounded h-12 dark:bg-gray-600 col-span-2"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="grid grid-cols-4 gap-4 h-auto" id="zearch_results"></div>
                 </div>
             </div>
         </div>
@@ -122,6 +104,24 @@
             <div class="add-to-cart grid grid-cols-3 gap-4 items-center p-4">
                 <p class="text-white font-bold m-0">{{{ data.price_html}}}</p>
                 <a href="?add-to-cart={{ data.product_id }}" class="btn col-span-2 bg-[#f99e41] text-white text-lg product_type_simple add_to_cart_button ajax_add_to_cart" data-quantity="1" data-product_sku="{{data.sku}}" data-product_id="{{ data.product_id }}">Add to Cart</a>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="tmpl-ezearch-loader">
+    <div class="loaders">
+        <div class="bg-black shadow-md m-3 rounded-md result-item animate-pulse">
+            <div class="image-area flex justify-center h-40">
+                <div class="w-full rounded h-full bg-slate-700"></div>
+            </div>
+            <div class="details-area bg-black text-white p-4">
+                <div class="bg-gray-200 h-6 rounded dark:bg-gray-600 w-full mb-2"></div>
+                <div class="bg-gray-300 h-12 rounded dark:bg-gray-700 w-full"></div>
+            </div>
+            <div class="add-to-cart grid grid-cols-3 gap-4 items-center p-4">
+                <div class=" bg-gray-200 rounded h-6 dark:bg-gray-700 w-auto"></div>
+                <div class="bg-gray-300 rounded h-12 dark:bg-gray-600 col-span-2"></div>
             </div>
         </div>
     </div>

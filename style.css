@@ -1736,6 +1736,12 @@ html {
   gap: 0.5rem;
 }
 
+.avatar.placeholder > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .btn {
   display: inline-flex;
   flex-shrink: 0;
@@ -2435,6 +2441,10 @@ body[dir="rtl"] .checkbox:checked,
 
 .input[list]::-webkit-calendar-picker-indicator {
   line-height: 1em;
+}
+
+.input-bordered {
+  --tw-border-opacity: 0.2;
 }
 
 .input:focus {
@@ -3165,6 +3175,11 @@ body[dir="rtl"] .checkbox:checked,
   background-color: rgb(51 65 85 / var(--tw-bg-opacity));
 }
 
+.\!bg-white {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
+}
+
 .p-5 {
   padding: 1.25rem;
 }
@@ -3188,6 +3203,14 @@ body[dir="rtl"] .checkbox:checked,
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.align-middle {
+  vertical-align: middle;
 }
 
 .text-lg {
