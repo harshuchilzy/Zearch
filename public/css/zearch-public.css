@@ -4,8 +4,8 @@
  */
  .ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable {
     width: 100% !important;
-    background-color: #0d000066;
-    z-index: 9999;
+    /* background-color: #0d000066;*/
+    z-index: 9999; 
     position: fixed !important;
     top: 0px !important;
     padding: 30px;
@@ -23,4 +23,12 @@
 
 .ui-accordion-content {
     height: auto !important;
+}
+.ui-widget-overlay.ui-front {
+    background-color: #0d000066;
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    overflow: hidden;
 }
