@@ -1,12 +1,7 @@
 <?php
 
 /**
- * The plugin bootstrap file
  *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
  *
  * @link              https://dayzsolutions.com
  * @since             1.0.0
@@ -15,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:       E-Zearch
  * Plugin URI:        https://dayzsolutions.com
- * Description:       This is a description of the plugin.
+ * Description:       Fastest searcher in the field.
  * Version:           1.0.0
  * Author:            DayZ Solutions
  * Author URI:        https://dayzsolutions.com
@@ -35,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'ZEARCH_VERSION', '1.0.0' );
+define( 'EZEARCH_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.

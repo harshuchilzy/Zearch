@@ -88,7 +88,7 @@ class Zearch_Public
 		 */
 
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/zearch-public.css', array(), $this->version, 'all');
-		wp_enqueue_style('tailwind', plugin_dir_url('Zearch') . 'Zearch/style.css');
+		wp_enqueue_style('ezearch-basic', plugin_dir_url('e-Zearch') . 'style.css');
 	}
 
 	/**
@@ -103,11 +103,10 @@ class Zearch_Public
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-accordion' );
 
-
 		wp_enqueue_script('zearch-public', plugin_dir_url(__FILE__) . 'js/zearch-public.js', array('jquery', 'wp-util'), $this->version, false);
 		wp_localize_script('zearch-public', 'DayzAjax', array('dayz_ajaxurl' => admin_url('admin-ajax.php')));
 		wp_enqueue_script('zearch-public');
-		wp_enqueue_script('zearch-infinite-scroll', plugin_dir_url(__FILE__) . 'js/scrollpagination.js', array(), $this->version, false);
+		// wp_enqueue_script('zearch-infinite-scroll', plugin_dir_url(__FILE__) . 'js/scrollpagination.js', array(), $this->version, false);
 
 		// Test ES NPM
 		// wp_enqueue_script('ezearch-es', plugin_dir_url(dirname( __FILE__ )) . 'build/ezearch-es.js', array(), $this->version, false);
@@ -275,66 +274,12 @@ class Zearch_Public
 
 		include_once 'template/template-one.php';
 	}
-	public  function dayz_product_cats()
-	{
-		$orderby = 'name';
-		$order = 'asc';
-		$hide_empty = false;
-		$cat_args = array(
-			'orderby'    => $orderby,
-			'order'      => $order,
-			'hide_empty' => $hide_empty,
-		);
 
-		$product_categories = get_terms('product_cat', $cat_args);
-
-		if (!empty($product_categories)) {
-
-
-
-			foreach ($product_categories as $key => $category) {
-
-				echo '<div class="form-control">';
-				echo '<label class="cursor-pointer label">';
-				echo '<span class="label-text text-black text-left text-lg capitalize">' . $category->name . '</span>';
-				echo '<input type="checkbox" value="' . $category->name . '" class="checkbox" />';
-				echo '</label>';
-				echo '</div>';
-			}
-		}
-	}
-
-	public  function dayz_product_brands()
-	{
-		$orderby = 'name';
-		$order = 'asc';
-		$hide_empty = false;
-		$cat_args = array(
-			'orderby'    => $orderby,
-			'order'      => $order,
-			'hide_empty' => $hide_empty,
-		);
-
-		$product_categories = get_terms('product_brand', $cat_args);
-
-		if (!empty($product_categories)) {
-
-			foreach ($product_categories as $key => $category) {
-				echo '<div class="form-control">';
-				echo '<label class="cursor-pointer label">';
-				echo '<span class="label-text text-black text-left text-lg capitalize">' . $category->name . '</span>';
-				echo '<input type="checkbox" value="' . $category->name . '" class="checkbox" />';
-				echo '</label>';
-				echo '</div>';
-				echo '<br>';
-			}
-		}
-		// return $this->get_price_range();
-	}
 }
 
 function ezearch_get_price_range()
 {
+	if(!class_exists( 'woocommerce' )){return;}
 	global $wpdb;
 
 	$args = WC()->query->get_main_query();
