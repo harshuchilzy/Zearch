@@ -129,7 +129,7 @@ class Zearch_Public
 		}
 
 		$client = ClientBuilder::create()
-			->setHosts(['http://88.198.32.151:9200'])
+			->setHosts(['http://localhost:9200'])
 			// ->setApiKey()
 			->build();
 		$params = [
@@ -195,7 +195,7 @@ class Zearch_Public
 		}
 
 		$client = ClientBuilder::create()
-			->setHosts(['http://88.198.32.151:9200'])
+			->setHosts(['http://localhost:9200'])
 			// ->setApiKey()
 			->build();
 		$params = [

@@ -25,7 +25,7 @@ class ZearchOptions {
 	public function zearch_create_admin_page() {
 		$this->zearch_options = get_option( 'zearch_option_name' );
         $client = ClientBuilder::create()
-        ->setHosts(['http://88.198.32.151:9200'])
+        ->setHosts(['http://localhost:9200'])
         // ->setApiKey()
         ->build();
 
